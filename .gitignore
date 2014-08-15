@@ -2,5 +2,5 @@
 .idea
 dist
 .DS_Store
-django_ucamibisclient.egg-info
+django_ucamlookup.egg-info
 MANIFEST
