@@ -1,0 +1,6 @@
+*.pyc
+.idea
+dist
+.DS_Store
+django_ucamibisclient.egg-info
+MANIFEST
