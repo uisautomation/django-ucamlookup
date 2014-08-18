@@ -2,11 +2,9 @@
     /**
      * ID of the last AJAX search request we sent.
      */
-    searchId_u = 0;
+    searchId_g = 0;
 
     $(document).ready(function() {
-        searchId_g = 0;
-
         $("#input-lookup-groups-ajax").select2({
             placeholder: "Search for a group",
             minimumInputLength: 3,
@@ -36,7 +34,8 @@
                 return group.groupid;
             },
             dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-            escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+            escapeMarkup: function (m) { return m; }
+            // we do not want to escape markup since we are displaying html in results
         });
 
         $("#input-lookup-groups-ajax").select2("data", [

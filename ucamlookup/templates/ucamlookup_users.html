@@ -34,7 +34,8 @@
                 return person.crsid;
             },
             dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-            escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+            escapeMarkup: function (m) { return m; }
+            // we do not want to escape markup since we are displaying html in results
         });
 
         $("#input-lookup-users-ajax").select2("data", [
