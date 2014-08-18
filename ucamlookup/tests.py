@@ -1,22 +1,26 @@
 from django.contrib.auth.models import User, Group
+from django.core.urlresolvers import reverse
 from django.test import TestCase
-from ucamlookup import user_in_groups
+from ucamlookup import user_in_groups, get_users_from_query, return_visibleName_by_crsid, get_groups_from_query, \
+    return_title_by_groupid, get_group_ids_of_a_user_in_lookup, get_institutions, get_institution_name_by_id
 
 
 class UcamLookupTests(TestCase):
 
-    def test_get_or_create_user_or_group(self):
+    def test_add_name_to_user_and_add_title_to_group(self):
         with self.assertRaises(User.DoesNotExist):
             User.objects.get(username="amc203")
         user1 = User.objects.create_user(username="amc203")
         user2 = User.objects.get(username="amc203")
         self.assertEqual(user1.id, user2.id)
+        self.assertEqual(user2.last_name, "Dr A. Martin-Campillo")
 
         with self.assertRaises(Group.DoesNotExist):
             Group.objects.get(pk=101888)
         group1 = Group.objects.create(pk=101888)
         group2 = Group.objects.get(pk=101888)
         self.assertEqual(group1.id, group2.id)
+        self.assertEqual(group2.name, "CS Information Systems team")
 
     def test_user_in_groups(self):
         amc203 = User.objects.create_user(username="amc203")
@@ -24,3 +28,85 @@ class UcamLookupTests(TestCase):
         self.assertTrue(user_in_groups(amc203, [information_systems_group]))
         finance_group = Group.objects.create(pk=101923)
         self.assertFalse(user_in_groups(amc203, [finance_group]))
+
+    def test_get_users_from_query(self):
+        results = get_users_from_query("amc203")
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['crsid'], "amc203")
+        self.assertEqual(results[0]['visibleName'], "Dr A. Martin-Campillo")
+
+        results = get_users_from_query("Martin-Campillo")
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['crsid'], "amc203")
+        self.assertEqual(results[0]['visibleName'], "Dr A. Martin-Campillo")
+
+    def test_return_visibleName_by_crsid(self):
+        result = return_visibleName_by_crsid("amc203")
+        self.assertEqual(result, "Dr A. Martin-Campillo")
+        result = return_visibleName_by_crsid("amc20311")
+        self.assertEqual(result, '')
+
+    def test_get_groups_from_query(self):
+        results = get_groups_from_query("Information Systems")
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['groupid'], 101888)
+        self.assertEqual(results[0]['title'], "CS Information Systems team")
+
+    def test_return_title_by_groupid(self):
+        result = return_title_by_groupid(101888)
+        self.assertEqual(result, "CS Information Systems team")
+
+    def test_get_groups_of_a_user_in_lookup(self):
+        amc203 = User.objects.create_user(username="amc203")
+        information_systems_group = Group.objects.create(pk=101888)
+        amc203_groups = get_group_ids_of_a_user_in_lookup(amc203)
+        self.assertIn(information_systems_group.id, amc203_groups)
+
+    def test_get_institutions(self):
+        results = get_institutions()
+        self.assertIn(("UIS", "University Information Services"), results)
+
+    def test_get_institutions_with_user(self):
+        amc203 = User.objects.create_user(username="amc203")
+        results = get_institutions(user=amc203)
+        self.assertEqual(("CS", "University Computing Service"), results[0])
+        self.assertEqual(("UIS", "University Information Services"), results[1])
+
+    def test_get_institution_name_by_id(self):
+        result = get_institution_name_by_id(institution_id="UIS")
+        self.assertEqual("University Information Services", result)
+
+    def test_get_institution_name_by_id_with_cache(self):
+        all_institutions = get_institutions()
+        result = get_institution_name_by_id(institution_id="UIS", all_institutions=all_institutions)
+        self.assertEqual("University Information Services", result)
+
+        test_user = User.objects.create_user(username="test0001")
+        results = get_institutions(user=test_user)
+
+        self.assertEqual(all_institutions, results)
+
+    def test_views_without_login(self):
+        response = self.client.get(reverse('ucamlookup_find_people'), {'query': 'amc203', 'searchId_u': '1'})
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith('http://testserver/accounts/login/'))
+        response = self.client.get(reverse('ucamlookup_find_groups'), {'query': 'Information Systems',
+                                                                       'searchId_g': '1'})
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith('http://testserver/accounts/login/'))
+
+    def test_findpeople_view(self):
+        User.objects.create_user(username="amc203", password="test")
+        self.assertTrue(self.client.login(username='amc203', password="test"))
+        response = self.client.get(reverse('ucamlookup_find_people'), {'query': 'amc203', 'searchId_u': '1'})
+        self.assertEqual(response.content,
+                         '{"persons": [{"visibleName": "Dr A. Martin-Campillo", "crsid": "amc203"}], '
+                         '"searchId_u": "1"}')
+
+    def test_findgroups_view(self):
+        User.objects.create_user(username="amc203", password="test")
+        self.assertTrue(self.client.login(username='amc203', password="test"))
+        response = self.client.get(reverse('ucamlookup_find_groups'), {'query': 'Information Systems',
+                                                                       'searchId_g': '1'})
+        self.assertEqual(response.content,
+                         '{"groups": [{"groupid": 101888, "title": "CS Information Systems team"}], "searchId_g": "1"}')

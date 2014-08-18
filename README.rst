@@ -1,6 +1,3 @@
-[|Build Status|\ ]
-(https://travis-ci.org/abrahammartin/django-ucamlookup)
-
 Introduction
 ============
 
@@ -17,4 +14,3 @@ Install django-ucamlookup using pip:
 
     pip install django-ucamlookup
 
-.. |Build Status| image:: https://travis-ci.org/abrahammartin/django-ucamlookup.svg?branch=master

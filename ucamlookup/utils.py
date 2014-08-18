@@ -25,7 +25,7 @@ def get_groups_from_query(search_string):
     """
     groups = GroupMethods(conn).search(query=search_string)
 
-    return map((lambda group: {'groupid': group.groupid, 'title': group.title}),
+    return map((lambda group: {'groupid': int(group.groupid), 'title': group.title}),
                groups)
 
 
@@ -38,7 +38,7 @@ def return_title_by_groupid(groupid):
     return group.title if group is not None else ''
 
 
-def get_groups_of_a_user_in_lookup(user):
+def get_group_ids_of_a_user_in_lookup(user):
     """ Returns the list of groups of a user in the lookup service
     :param user: the user
     :return: the list of group_ids
@@ -83,7 +83,7 @@ def user_in_groups(user, groups):
     :return: True if the user belongs to any of the groups or False otherwise
     """
 
-    user_group_list = get_groups_of_a_user_in_lookup(user)
+    user_group_list = get_group_ids_of_a_user_in_lookup(user)
     groups = filter(lambda group: group.id in user_group_list, groups)
     if len(groups) > 0:
         return True
