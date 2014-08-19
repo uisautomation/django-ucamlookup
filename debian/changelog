@@ -1,0 +1,6 @@
+django-ucamlookup (1.0) unstable; urgency=low
+
+  [Abraham Martin]
+  * Initial debianisation
+
+ -- Abraham Martin <amc203@cam.ac.uk>  Tue, 19 Aug 2014 11:30:39 +0100
