@@ -48,6 +48,7 @@ class LookupUserAdmin(UserAdmin):
             'fields': ('username',),
         }),
     )
+    add_form_template = 'admin/auth/lookup_user/add_form.html'
 
 
 admin.site.unregister(User)
