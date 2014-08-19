@@ -1,6 +1,7 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from .models import LookupGroup
 from utils import *
 
 
@@ -11,8 +12,8 @@ def add_name_to_user(instance, **kwargs):
         user.last_name = return_visibleName_by_crsid(user.username)
 
 
-@receiver(pre_save, sender=Group)
+@receiver(pre_save, sender=LookupGroup)
 def add_title_to_group(instance, **kwargs):
     group = instance
     if group is not None:
-        group.name = return_title_by_groupid(group.id)
+        group.name = return_title_by_groupid(group.lookup_id)

@@ -1,8 +1,9 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin, GroupAdmin
+from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django import forms
+from .models import LookupGroup
 
 
 class UserCreationForm(forms.ModelForm):
@@ -53,3 +54,21 @@ class LookupUserAdmin(UserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, LookupUserAdmin)
+
+
+class LookupGroupAdmin(admin.ModelAdmin):
+    list_display = ('lookup_id', 'name',)
+    search_fields = ('lookup_id', 'name',)
+    ordering = ('lookup_id', 'name',)
+    add_form_template = 'admin/auth/lookup_group/add_form.html'
+    def get_form(self, request, obj=None, **kwargs):
+        self.exclude = []
+        if not request.resolver_match.view_name == u'admin:ucamlookup_lookupgroup_add':
+            self.exclude.append('lookup_id')
+            self.exclude.append('name')
+        else:
+            self.exclude.append('name')
+        return super(LookupGroupAdmin, self).get_form(request, obj, **kwargs)
+
+
+admin.site.register(LookupGroup, LookupGroupAdmin)

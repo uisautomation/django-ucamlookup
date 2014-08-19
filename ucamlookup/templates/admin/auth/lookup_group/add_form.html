@@ -15,7 +15,8 @@
 {% endblock %}
 
 {% block form_top %}
-    <p>The autocomplete field searches by name or crsid in the lookup service of the University of Cambridge.</p>
+    <p>Add a new group. The autocomplete field searches by group name or group id in the lookup service of the
+        University of Cambridge.</p>
 {% endblock %}
 
 {% block after_field_sets %}
@@ -24,41 +25,41 @@
     /**
      * ID of the last AJAX search request we sent.
      */
-    searchId_u = 0;
+    searchId_g = 0;
 
     $(document).ready(function() {
-        $("#id_username").select2({
-            placeholder: "Search for a University of Cambridge user",
+        $("#id_lookup_id").select2({
+            placeholder: "Search for a group",
             minimumInputLength: 3,
             multiple: false,
             ajax: {
-                url: "{%  url 'ucamlookup_find_people' %}",
+                url: "{%  url 'ucamlookup_find_groups' %}",
                 dataType: 'json',
                 data: function (term, page) {
                     return {
                         query: term,
-                        searchId_u: ++searchId_u
+                        searchId_g: ++searchId_g
                     };
                 },
                 results: function (data, page) {
-                    if (data.searchId_u != searchId_u)
+                    if (data.searchId_g != searchId_g)
                         return;
-                    return {results: data.persons};
+                    return {results: data.groups};
                 }
             },
-            formatResult: function(person) {
-                return person.visibleName+" ("+person.crsid+") ";
+            formatResult: function(group) {
+                return group.title;
             },
-            formatSelection: function(person) {
-                return person.visibleName+" ("+person.crsid+") ";
+            formatSelection: function(group) {
+                return group.title;
             },
-            id: function(person) {
-                return person.crsid;
+            id: function(group) {
+                return group.groupid;
             },
             dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
             escapeMarkup: function (m) { return m; },
             // we do not want to escape markup since we are displaying html in results
-            width: '50%'
+            width: '100%'
         });
     });
 </script>

@@ -47,6 +47,7 @@ def get_group_ids_of_a_user_in_lookup(user):
     group_list = PersonMethods(conn).getGroups(scheme="crsid", identifier=user.username)
     return map(lambda group: int(group.groupid), group_list)
 
+
 def get_institutions(user=None):
     """ Returns the list of institutions using the lookup ucam service. The institutions of the user doing
     the request will be shown first
@@ -84,7 +85,7 @@ def user_in_groups(user, groups):
     """
 
     user_group_list = get_group_ids_of_a_user_in_lookup(user)
-    groups = filter(lambda group: group.id in user_group_list, groups)
+    groups = filter(lambda group: group.lookup_id in user_group_list, groups)
     if len(groups) > 0:
         return True
     else:
