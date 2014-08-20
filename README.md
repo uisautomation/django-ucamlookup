@@ -62,11 +62,11 @@ ucamlookup_groups. These macros have javascript functions that will modify a htm
 with interaction to the lookup service that will let the user use autocomplete and search for lookup users and groups.
 
 If you want to include an input box to let the user search and introduce a single user or a list of users, use the 
-ucamlookup_user or ucamlookup_users macro. Your html input tag should have as an *id* either *id_user* or *id_users* 
-and include the macro in your template:
+ucamlookup_users macro. You should pass as parameters to the macro the html input tag *id* and if you want to let the 
+user select one or more users with the parameter *multiple*:
 
 ```python
-    {% include 'ucamlookup_users.html' %}
+    {% include 'ucamlookup_users.html' with input_tag_id="lookup_users" multiple=true %}
 ```
 
 and you will also have to include the following macro in the head of your template to load the js and css files 
