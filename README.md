@@ -70,11 +70,11 @@ user select one or more users with the parameter *multiple*:
 ```
 
 and you will also have to include the following macro in the head of your template to load the js and css files 
-associated (these macros require jquery).
+associated. These macros require jquery if you want to include your own jquery library or you are already using it in
+your template use the parameter *jquery* to specify it.
 
 ```python
-    <script src="{% static 'jquery-1.11.1.min.js' %}"></script>
-    {% include 'ucamlookup_headers.html' %}
+    {% include 'ucamlookup_headers.html' with jquery=True %}
 ```
 
 And your input tag will be transform into an ajax box that allows the user to search for users using lookup either
