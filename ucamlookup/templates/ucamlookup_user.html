@@ -5,10 +5,10 @@
     searchId_u = 0;
 
     $(document).ready(function() {
-        $("#id_users").select2({
-            placeholder: "Search for user",
+        $("#id_user").select2({
+            placeholder: "Search for a user",
             minimumInputLength: 3,
-            multiple: true,
+            multiple: false,
             ajax: {
                 url: "{%  url 'ucamlookup_find_people' %}",
                 dataType: 'json',

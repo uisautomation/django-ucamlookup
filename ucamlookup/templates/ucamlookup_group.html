@@ -5,10 +5,10 @@
     searchId_g = 0;
 
     $(document).ready(function() {
-        $("#id_groups").select2({
-            placeholder: "Search for groups",
+        $("#id_group").select2({
+            placeholder: "Search for a group",
             minimumInputLength: 3,
-            multiple: true,
+            multiple: false,
             ajax: {
                 url: "{%  url 'ucamlookup_find_groups' %}",
                 dataType: 'json',
