@@ -77,15 +77,15 @@ def get_institution_name_by_id(institution_id, all_institutions=None):
     return instname if instname is not None else 'This institution no longer exists in the database'
 
 
-def user_in_groups(user, groups):
+def user_in_groups(user, lookup_groups):
     """ Check in the lookup webservice if the user is member of any of the groups given
-    :param user: the user
-    :param groups: the list of groups
+    :param user: the User
+    :param lookup_groups: the list of LookupGroups
     :return: True if the user belongs to any of the groups or False otherwise
     """
 
     user_group_list = get_group_ids_of_a_user_in_lookup(user)
-    groups = filter(lambda group: group.lookup_id in user_group_list, groups)
+    groups = filter(lambda group: group.lookup_id in user_group_list, lookup_groups)
     if len(groups) > 0:
         return True
     else:
