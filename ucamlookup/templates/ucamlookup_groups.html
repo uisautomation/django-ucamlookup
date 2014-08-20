@@ -41,7 +41,7 @@
         $("#input-lookup-groups-ajax").select2("data", [
             {% for authorised_group in lookup_group_list %}
                 {
-                    groupid: "{{ authorised_group.id }}",
+                    groupid: "{{ authorised_group.lookup_id }}",
                     title: "{{ authorised_group.name }}"
                 },
             {% endfor %}
