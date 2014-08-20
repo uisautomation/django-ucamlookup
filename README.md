@@ -99,14 +99,31 @@ group.
 
 The module also provides some useful functions to use in your app that do all the calls to the lookup service needed.
 
-get_group_ids_of_a_user_in_lookup(user): Returns the list of group ids of a user
+*get_group_ids_of_a_user_in_lookup(user)*: Returns the list of group ids of a user
 
-user_in_groups(user, lookup_groups): Check in the lookup webservice if the user is member of any of the groups in the 
+*user_in_groups(user, lookup_groups)*: Check in the lookup webservice if the user is member of any of the groups in the 
 LookupGroup list passed by parameter. Returns True if the user is in any of the groups or False otherwise
 
-def get_institutions(user=None): Returns the list of institutions using the lookup ucam service. The institutions of 
+*def get_institutions(user=None)*: Returns the list of institutions using the lookup ucam service. The institutions of 
 the user passed by parameters will be shown first in the list returned
 
-get_institution_name_by_id(institution_id, all_institutions=None): Returns the name of an institution by the id passed.
-If all_institutions is passed (the result from get_institutions) then the search is done locally using this list instead
-of a lookup call.
+*get_institution_name_by_id(institution_id, all_institutions=None)*: Returns the name of an institution by the id 
+passed. If all_institutions is passed (the result from get_institutions) then the search is done locally using this 
+list instead of a lookup call.
+
+The last two methods can be used to add institutions to a model and show the name instead of the code in the admin 
+interface 
+
+```python
+class MyModelAdmin(ModelAdmin):
+    all_institutions = get_institutions()
+    
+    model = MyModel
+    list_display = ('institution', )
+    list_filter = ('institution_id', )
+
+    def institution(self, obj):
+        return get_institution_name_by_id(obj.institution_id, self.all_institutions)
+        
+    institution.admin_order_field = 'institution_id'
+```
