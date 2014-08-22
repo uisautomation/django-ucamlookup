@@ -14,8 +14,8 @@ class Migration(migrations.Migration):
             name='LookupGroup',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=250)),
-                ('lookup_id', models.IntegerField()),
+                ('name', models.CharField(max_length=255)),
+                ('lookup_id', models.CharField(max_length=255, unique=True)),
             ],
             options={
             },
