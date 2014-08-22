@@ -17,17 +17,17 @@ class UcamLookupTests(TestCase):
         self.assertEqual(user2.last_name, "Dr A. Martin-Campillo")
 
         with self.assertRaises(LookupGroup.DoesNotExist):
-            LookupGroup.objects.get(lookup_id=101888)
-        group1 = LookupGroup.objects.create(lookup_id=101888)
-        group2 = LookupGroup.objects.get(lookup_id=101888)
+            LookupGroup.objects.get(lookup_id="101888")
+        group1 = LookupGroup.objects.create(lookup_id="101888")
+        group2 = LookupGroup.objects.get(lookup_id="101888")
         self.assertEqual(group1.id, group2.id)
         self.assertEqual(group2.name, "CS Information Systems team")
 
     def test_user_in_groups(self):
         amc203 = User.objects.create_user(username="amc203")
-        information_systems_group = LookupGroup.objects.create(lookup_id=101888)
+        information_systems_group = LookupGroup.objects.create(lookup_id="101888")
         self.assertTrue(user_in_groups(amc203, [information_systems_group]))
-        finance_group = LookupGroup.objects.create(lookup_id=101923)
+        finance_group = LookupGroup.objects.create(lookup_id="101923")
         self.assertFalse(user_in_groups(amc203, [finance_group]))
 
     def test_get_users_from_query(self):
@@ -50,16 +50,16 @@ class UcamLookupTests(TestCase):
     def test_get_groups_from_query(self):
         results = get_groups_from_query("Information Systems")
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]['groupid'], 101888)
+        self.assertEqual(results[0]['groupid'], "101888")
         self.assertEqual(results[0]['title'], "CS Information Systems team")
 
     def test_return_title_by_groupid(self):
-        result = return_title_by_groupid(101888)
+        result = return_title_by_groupid("101888")
         self.assertEqual(result, "CS Information Systems team")
 
     def test_get_groups_of_a_user_in_lookup(self):
         amc203 = User.objects.create_user(username="amc203")
-        information_systems_group = LookupGroup.objects.create(lookup_id=101888)
+        information_systems_group = LookupGroup.objects.create(lookup_id="101888")
         amc203_groups = get_group_ids_of_a_user_in_lookup(amc203)
         self.assertIn(information_systems_group.lookup_id, amc203_groups)
 
@@ -70,8 +70,8 @@ class UcamLookupTests(TestCase):
     def test_get_institutions_with_user(self):
         amc203 = User.objects.create_user(username="amc203")
         results = get_institutions(user=amc203)
-        self.assertEqual(("CS", "University Computing Service"), results[0])
-        self.assertEqual(("UIS", "University Information Services"), results[1])
+        self.assertIn(("CS", "University Computing Service"), results)
+        self.assertIn(("UIS", "University Information Services"), results)
 
     def test_get_institution_name_by_id(self):
         result = get_institution_name_by_id(institution_id="UIS")
@@ -110,4 +110,4 @@ class UcamLookupTests(TestCase):
         response = self.client.get(reverse('ucamlookup_find_groups'), {'query': 'Information Systems',
                                                                        'searchId_g': '1'})
         self.assertEqual(response.content,
-                         '{"groups": [{"groupid": 101888, "title": "CS Information Systems team"}], "searchId_g": "1"}')
+                         '{"groups": [{"groupid": "101888", "title": "CS Information Systems team"}], "searchId_g": "1"}')

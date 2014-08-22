@@ -25,7 +25,7 @@ def get_groups_from_query(search_string):
     """
     groups = GroupMethods(conn).search(query=search_string)
 
-    return map((lambda group: {'groupid': int(group.groupid), 'title': group.title}),
+    return map((lambda group: {'groupid': group.groupid, 'title': group.title}),
                groups)
 
 
@@ -45,7 +45,7 @@ def get_group_ids_of_a_user_in_lookup(user):
     """
 
     group_list = PersonMethods(conn).getGroups(scheme="crsid", identifier=user.username)
-    return map(lambda group: int(group.groupid), group_list)
+    return map(lambda group: group.groupid, group_list)
 
 
 def get_institutions(user=None):
