@@ -69,30 +69,35 @@ group is saved (new or updated). The name is stored in the *name*
 property of the class and the id of the lookup group is stored in
 *lookup\_id*.
 
+It is important to say that this model is not used to cache relations
+between lookup users and lookup groups. These relations are always
+queried to the live lookup service. The model is only used to let the
+developer make relations between models that include lookup groups and
+cache the name of the group.
+
 Template macros
 ---------------
 
-Four macros are available to be used in a template: ucamlookup\_user,
-ucamlookup\_group, ucamlookup\_users, and ucamlookup\_groups. These
-macros have javascript functions that will modify a html input tag to an
-interactive ajax box with interaction to the lookup service that will
-let the user use autocomplete and search for lookup users and groups.
+Two macros are available to be used in a template: ucamlookup\_users,
+and ucamlookup\_groups. These macros have javascript functions that will
+modify a html input tag to an interactive ajax box with interaction to
+the lookup service that will let the user use autocomplete and search
+for lookup users and groups.
 
 If you want to include an input box to let the user search and introduce
 a single user or a list of users, use the ucamlookup\_users macro. You
-should pass as parameters to the macro the html input tag *id* and if
-you want to let the user select one or more users with the parameter
-*multiple*:
+should pass as parameters to the macro the html input tag *id* that you
+want to modify/use and if you want to let the user select one or more
+users with the parameter *multiple*:
 
 .. code:: python
 
         {% include 'ucamlookup_users.html' with input_tag_id="lookup_users" multiple=true %}
 
-and you will also have to include the following macro in the head of
-your template to load the js and css files associated. These macros
-require jquery if you want to include your own jquery library or you are
-already using it in your template use the parameter *jquery* to specify
-it.
+You will also have to include the following macro in the head of your
+template to load the js and css files associated. These macros require
+jquery if you want to include your own jquery library or you are already
+using it in your template use the parameter *jquery* to specify it.
 
 .. code:: python
 
