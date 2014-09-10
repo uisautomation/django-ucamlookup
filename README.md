@@ -111,6 +111,13 @@ LookupGroup list passed by parameter. Returns True if the user is in any of the 
 *def get_institutions(user=None)*: Returns the list of institutions using the lookup ucam service. The institutions of 
 the user passed by parameters will be shown first in the list returned
 
+*validate_crsids(crsids_text)*: It receives a list of crsids (comming from input tag from the template macros described 
+previously) [wich format is separated by commas and with no spaces in between] and returns a list of Users corresponding
+to the crsids passed.
+
+*get_or_create_user_by_crsid(crsid)*: Returns the User corresponding to the crsid passed. If it does not exists in the 
+database, it is created.
+
 *get_institution_name_by_id(institution_id, all_institutions=None)*: Returns the name of an institution by the id 
 passed. If all_institutions is passed (the result from get_institutions) then the search is done locally using this 
 list instead of a lookup call.

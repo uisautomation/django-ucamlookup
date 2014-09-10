@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 import re
 from ibisclient import *
@@ -90,3 +91,43 @@ def user_in_groups(user, lookup_groups):
         return True
     else:
         return False
+
+
+def get_or_create_user_by_crsid(crsid):
+    """ Returns the django user corresponding to the crsid parameter.
+        :param crsid: the crsid of the retrieved user
+    """
+
+    user = User.objects.filter(username=crsid)
+    if user.exists():
+        user = user.first()
+    else:
+        user = User.objects.create_user(username=crsid)
+
+    return user
+
+
+def validate_crsids(crsids_text):
+    """ Validates the list of authorsied users from input
+        :param crsids_text: list of crsids from the form
+        :return: The list of users
+    """
+
+    users = ()
+
+    if crsids_text is None:
+        return users
+
+    crsids = crsids_text.split(',')
+
+    if len(crsids) == 1 and crsids[0] == '':
+        return users
+
+    crsid_re = re.compile(r'^[a-z][a-z0-9]{3,7}$')
+    for crsid in crsids:
+        if crsid_re.match(crsid):
+            users += (get_or_create_user_by_crsid(crsid),)
+        else:
+            raise ValidationError("The list of users contains an invalid user")
+
+    return users
