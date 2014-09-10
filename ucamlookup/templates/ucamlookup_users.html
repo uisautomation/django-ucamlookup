@@ -38,7 +38,7 @@
             // we do not want to escape markup since we are displaying html in results
         });
 
-        $("#input-lookup-users-ajax").select2("data", [
+        $("#{{ input_tag_id }}").select2("data", [
             {% for authorised_user in lookup_users_list %}
                 {
                     crsid: "{{ authorised_user.username }}",

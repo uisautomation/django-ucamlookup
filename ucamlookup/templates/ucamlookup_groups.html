@@ -38,7 +38,7 @@
             // we do not want to escape markup since we are displaying html in results
         });
 
-        $("#input-lookup-groups-ajax").select2("data", [
+        $("#{{ input_tag_id }}").select2("data", [
             {% for authorised_group in lookup_group_list %}
                 {
                     groupid: "{{ authorised_group.lookup_id }}",

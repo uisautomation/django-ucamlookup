@@ -3,12 +3,12 @@
 {% load i18n %}
 
 
-{% block stylesheets %}
+{% block extrastyle %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'select2-3.4.8/select2.css' %}">
 {% endblock %}
 
-{% block javascripts %}
+{% block extrahead %}
     {{ block.super }}
     <script src="{% static 'jquery-1.11.1.min.js' %}"></script>
     <script src="{% static 'select2-3.4.8/select2.min.js' %}"></script>
