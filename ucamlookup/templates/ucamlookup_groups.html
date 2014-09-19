@@ -1,3 +1,4 @@
+{% load dictionary_tag %}
 <script>
     /**
      * ID of the last AJAX search request we sent.
@@ -39,7 +40,7 @@
         });
 
         $("#{{ input_tag_id }}").select2("data", [
-            {% for authorised_group in lookup_group_list %}
+            {% for authorised_group in lookup_lists|get_item:group_list %}
                 {
                     groupid: "{{ authorised_group.lookup_id }}",
                     title: "{{ authorised_group.name }}"

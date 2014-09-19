@@ -1,0 +1,14 @@
+django-ucamwebauth changelog
+=============================
+
+
+1.1 - 19/09/2014
+------------------
+
+- The templates macros now support multiple calls: more than one lookup input tag can be used in a template
+
+
+1.0 - 19/08/2014
+------------------
+
+- Initial version

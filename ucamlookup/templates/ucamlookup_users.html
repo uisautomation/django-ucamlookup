@@ -1,3 +1,4 @@
+{% load dictionary_tag %}
 <script>
     /**
      * ID of the last AJAX search request we sent.
@@ -39,7 +40,7 @@
         });
 
         $("#{{ input_tag_id }}").select2("data", [
-            {% for authorised_user in lookup_users_list %}
+            {% for authorised_user in lookup_lists|get_item:user_list %}
                 {
                     crsid: "{{ authorised_user.username }}",
                     visibleName: "{{ authorised_user.last_name }}",

@@ -5,6 +5,7 @@ from ibisclient import *
 
 conn = createConnection()
 
+
 def get_users_from_query(search_string):
     """ Returns the list of people based on the search string using the lookup ucam service
         :param search_string: the search string

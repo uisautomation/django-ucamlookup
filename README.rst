@@ -92,7 +92,19 @@ users with the parameter *multiple*:
 
 .. code:: python
 
-        {% include 'ucamlookup_users.html' with input_tag_id="lookup_users" multiple=true %}
+        {% include 'ucamlookup_users.html' with input_tag_id="lookup_users" multiple=true user_list="authors" %}
+
+If you want to show existing records in the input tag you will need to
+pass to the view the list of crsids. This list needs to be passed inside
+a dictionary called *loockup\_lists*. The key entry name of the
+dictionary where the list is located it is passed to the macro using the
+variable *user\_list* as shown previously. In this example:
+
+.. code:: python
+
+        lookup_lists = {
+            'authors': post.users.all(),
+        }
 
 You will also have to include the following macro in the head of your
 template to load the js and css files associated. These macros require
@@ -142,6 +154,15 @@ False otherwise
 *def get\_institutions(user=None)*: Returns the list of institutions
 using the lookup ucam service. The institutions of the user passed by
 parameters will be shown first in the list returned
+
+*validate\_crsids(crsids\_text)*: It receives a list of crsids (comming
+from input tag from the template macros described previously) [wich
+format is separated by commas and with no spaces in between] and returns
+a list of Users corresponding to the crsids passed.
+
+*get\_or\_create\_user\_by\_crsid(crsid)*: Returns the User
+corresponding to the crsid passed. If it does not exists in the
+database, it is created.
 
 *get\_institution\_name\_by\_id(institution\_id,
 all\_institutions=None)*: Returns the name of an institution by the id

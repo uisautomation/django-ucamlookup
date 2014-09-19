@@ -70,7 +70,17 @@ ucamlookup_users macro. You should pass as parameters to the macro the html inpu
 and if you want to let the user select one or more users with the parameter *multiple*:
 
 ```python
-    {% include 'ucamlookup_users.html' with input_tag_id="lookup_users" multiple=true %}
+    {% include 'ucamlookup_users.html' with input_tag_id="lookup_users" multiple=true user_list="authors" %}
+```
+
+If you want to show existing records in the input tag you will need to pass to the view the list of crsids. This list 
+needs to be passed inside a dictionary called *loockup_lists*. The key entry name of the dictionary where the list is 
+located it is passed to the macro using the variable *user_list* as shown previously. In this example:
+
+```python
+    lookup_lists = {
+        'authors': post.users.all(),
+    }
 ```
 
 You will also have to include the following macro in the head of your template to load the js and css files 
