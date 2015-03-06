@@ -75,7 +75,6 @@ class UcamLookupTests(TestCase):
     def test_get_institutions_with_user(self):
         amc203 = User.objects.create_user(username="amc203")
         results = get_institutions(user=amc203)
-        self.assertIn(("CS", "University Computing Service"), results)
         self.assertIn(("UIS", "University Information Services"), results)
 
     def test_get_institution_name_by_id(self):
