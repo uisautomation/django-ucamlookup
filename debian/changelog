@@ -1,3 +1,9 @@
+django-ucamwebauth (1.2) unstable; urgency=low
+
+  * Updated ibisclient to 1.2.3
+
+ -- Abraham Martin <amc203@cam.ac.uk>  Fri, 1 May 2015 09:42:24 +0100
+
 django-ucamwebauth (1.1) unstable; urgency=low
 
   * New upstream release (updated to 1.1)

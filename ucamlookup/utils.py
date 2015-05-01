@@ -132,3 +132,13 @@ def validate_crsids(crsids_text):
             raise ValidationError("The list of users contains an invalid user")
 
     return users
+
+
+def get_users_of_a_group(group):
+    """ Returns the list of users of a LookupGroup
+    :param group: The LookupGroup
+    :return: the list of Users
+    """
+
+    return map(lambda user: get_or_create_user_by_crsid(user.identifier ),
+               GroupMethods(conn).getMembers(groupid=group.groupid))
