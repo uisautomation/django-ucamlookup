@@ -4,6 +4,19 @@ django-ucamwebauth (1.2) unstable; urgency=low
 
  -- Abraham Martin <amc203@cam.ac.uk>  Fri, 1 May 2015 09:42:24 +0100
 
+django-ucamlookup (1.1.2) unstable; urgency=low
+
+  * Remove University Computing Service from test_get_institutions_with_user
+
+ -- Matthew Vernon <mcv21@cam.ac.uk>  Fri, 06 Mar 2015 17:32:10 +0000
+
+django-ucamlookup (1.1.1) unstable; urgency=low
+
+  * Correct package name in changelog
+  * Add myself to Uploaders
+
+ -- Matthew Vernon <mcv21@cam.ac.uk>  Fri, 06 Mar 2015 17:15:35 +0000
+
 django-ucamwebauth (1.1) unstable; urgency=low
 
   * New upstream release (updated to 1.1)
@@ -12,7 +25,6 @@ django-ucamwebauth (1.1) unstable; urgency=low
 
 django-ucamlookup (1.0) unstable; urgency=low
 
-  [Abraham Martin]
   * Initial debianisation
 
  -- Abraham Martin <amc203@cam.ac.uk>  Tue, 19 Aug 2014 11:30:39 +0100

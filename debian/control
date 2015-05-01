@@ -1,6 +1,7 @@
 Source: django-ucamlookup
 Maintainer: UIS Information Systems Group, University of Cambridge <information-systems@ucs.cam.ac.uk>
-Uploaders: Abraham Martin <amc203@cam.ac.uk>
+Uploaders: Abraham Martin <amc203@cam.ac.uk>,
+	   Matthew Vernon <mcv21@cam.ac.uk>
 Section: python
 Priority: optional
 Build-Depends: python-setuptools, python-all (>= 2.6.6-3), debhelper (>=9),
