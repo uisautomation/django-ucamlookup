@@ -1,6 +1,12 @@
 django-ucamwebauth changelog
 =============================
 
+1.2.1 - 01/05/2015
+------------------
+
+- Limitation of the maximum characters the User.last_name (30) and Group.name (80) can have
+
+
 1.2 - 01/05/2015
 ------------------
 
