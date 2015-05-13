@@ -1,10 +1,10 @@
-django-ucamwebauth (1.2.1) unstable; urgency=high
+django-ucamlookup (1.2.1) unstable; urgency=high
 
   * Limitation of the maximum characters the User.last_name (30) and Group.name (80) can have
 
  -- Abraham Martin <amc203@cam.ac.uk>  Wed, 13 May 2015 16:37:01 +0100
 
-django-ucamwebauth (1.2) unstable; urgency=low
+django-ucamlookup (1.2) unstable; urgency=low
 
   * Updated ibisclient to 1.2.3
 
@@ -23,7 +23,7 @@ django-ucamlookup (1.1.1) unstable; urgency=low
 
  -- Matthew Vernon <mcv21@cam.ac.uk>  Fri, 06 Mar 2015 17:15:35 +0000
 
-django-ucamwebauth (1.1) unstable; urgency=low
+django-ucamlookup (1.1) unstable; urgency=low
 
   * New upstream release (updated to 1.1)
 
