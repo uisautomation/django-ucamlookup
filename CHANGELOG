@@ -1,7 +1,13 @@
 django-ucamlookup changelog
 =============================
 
-1.2.1 - 01/05/2015
+1.4 - 14/05/2015
+------------------
+
+- Unified debian and pypi versions
+
+
+1.2.1 - 13/05/2015
 ------------------
 
 - Limitation of the maximum characters the User.last_name (30) and Group.name (80) can have

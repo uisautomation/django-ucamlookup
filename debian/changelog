@@ -1,3 +1,9 @@
+django-ucamlookup (1.4) unstable; urgency=high
+
+  * Unified debian and pypi versions
+
+ -- Abraham Martin <amc203@cam.ac.uk>  Wed, 14 May 2015 16:18:21 +0100
+
 django-ucamlookup (1.2.1) unstable; urgency=high
 
   * Limitation of the maximum characters the User.last_name (30) and
