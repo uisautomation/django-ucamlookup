@@ -1,6 +1,7 @@
 django-ucamlookup (1.2.1) unstable; urgency=high
 
-  * Limitation of the maximum characters the User.last_name (30) and Group.name (80) can have
+  * Limitation of the maximum characters the User.last_name (30) and
+  Group.name (80) can have
 
  -- Abraham Martin <amc203@cam.ac.uk>  Wed, 13 May 2015 16:37:01 +0100
 
