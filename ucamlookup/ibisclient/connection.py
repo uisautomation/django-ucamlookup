@@ -20,7 +20,7 @@
 # --------------------------------------------------------------------------
 
 """
-Connection classes to connect to Lookup/Ibis web service and allow API
+Connection classes to connect to the Lookup/Ibis web service and allow API
 methods to be invoked.
 """
 
@@ -46,13 +46,10 @@ _MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
 class IbisException(Exception):
     """
     Exception thrown when a web service API method fails. This is wrapper
-    around the IbisError object returned by the server, which contains the
-    full details of what went wrong.
+    around the :any:`IbisError` object returned by the server, which contains
+    the full details of what went wrong.
 
-    NOTE: This exception class deliberately breaks with the Python style
-    guide's naming convention for exception classes, for consistency with
-    the Java code. IbisError refers to the error DTO contained in this
-    exception.
+    .. codeauthor:: Dean Rasheed (dev-group@ucs.cam.ac.uk)
     """
     def __init__(self, error):
         Exception.__init__(self, error.message)
@@ -61,14 +58,20 @@ class IbisException(Exception):
     def get_error(self):
         """
         Returns the underlying error from the server.
+
+        **Returns**
+          :any:`IbisError`
+            The underlying error from the server.
         """
         return self.error
 
 class HTTPSValidatingConnection(HTTPSConnection):
     """
-    Class extending the standard HTTPSConnection class from httplib, so
-    that it checks the server's certificates, validating them against the
-    specified CA certificates.
+    Class extending the standard :py:class:`HTTPSConnection` class from
+    :any:`httplib`, so that it checks the server's certificates, validating
+    them against the specified CA certificates.
+
+    .. codeauthor:: Dean Rasheed (dev-group@ucs.cam.ac.uk)
     """
     def __init__(self, host, port, ca_certs):
         HTTPSConnection.__init__(self, host, port)
@@ -130,6 +133,8 @@ class IbisClientConnection:
     """
     Class to connect to the Lookup/Ibis server and invoke web service API
     methods.
+
+    .. codeauthor:: Dean Rasheed (dev-group@ucs.cam.ac.uk)
     """
     def __init__(self, host, port, url_base, check_certs):
         self.host = host
@@ -165,7 +170,12 @@ class IbisClientConnection:
 
         This method may be called at any time, and affects all subsequent
         access using this connection, but does not affect any other
-        IbisClientConnection objects.
+        :any:`IbisClientConnection` objects.
+
+        **Parameters**
+          `username` : str
+            [required] The username to connect as. This should either be
+            ``"anonymous"`` (the default) or the name of a group.
         """
         self.username = username
         self._update_authorization()
@@ -175,6 +185,10 @@ class IbisClientConnection:
         Set the password to use when connecting to the Lookup/Ibis web
         service. This is only necessary when connecting as a group, in
         which case it should be that group's password.
+
+        **Parameters**
+          `password` : str
+            [required] The group password.
         """
         self.password = password
         self._update_authorization()
@@ -217,7 +231,7 @@ class IbisClientConnection:
             * path_params = {"scheme": "crsid", "identifier": "dar17"}
             * query_params = {"fetch": "email,title"}
 
-        This method will create a URL like the following:
+        this method will create a URL like the following:
 
             api/v1/person/crsid/dar17?fetch=email%2Ctitle
 
@@ -242,8 +256,31 @@ class IbisClientConnection:
 
         The path should be the relative path to the method with standard
         Python format specifiers for any path parameters, for example
-        "/api/v1/person/%(scheme)s/%(identifier)s". Any path parameters
+        ``"/api/v1/person/%(scheme)s/%(identifier)s"``. Any path parameters
         specified are then substituted into the path.
+
+        **Parameters**
+          `method` : str
+            [required] The method type (``"GET"``, ``"POST"``, ``"PUT"`` or
+            ``"DELETE"``).
+
+          `path` : str
+            [required] The path to the method to invoke.
+
+          `path_params` : dict
+            [optional] Any path parameters that should be inserted into the
+            path in place of any format specifiers.
+
+          `query_params` : dict
+            [optional] Any query parameters to add as part of the URL's query
+            string.
+
+          `form_params` : dict
+            [optional] Any form parameters to submit.
+
+        **Returns**
+          :any:`IbisResult`
+            The result of invoking the method.
         """
         path_params = self._params_to_strings(path_params)
         query_params = self._params_to_strings(query_params)
@@ -285,7 +322,12 @@ def createConnection():
     https://www.lookup.cam.ac.uk/.
 
     The connection is initially anonymous, but this may be changed using
-    its set_username() and set_password() methods.
+    its :any:`set_username() <IbisClientConnection.set_username>` and
+    :any:`set_password() <IbisClientConnection.set_password>` methods.
+
+    **Returns**
+      :any:`IbisClientConnection`
+        A new connection to the Lookup server.
     """
     return IbisClientConnection("www.lookup.cam.ac.uk", 443, "", True)
 
@@ -295,10 +337,16 @@ def createTestConnection():
     at https://lookup-test.csx.cam.ac.uk/.
 
     The connection is initially anonymous, but this may be changed using
-    its set_username() and set_password() methods.
+    its :any:`set_username() <IbisClientConnection.set_username>` and
+    :any:`set_password() <IbisClientConnection.set_password>` methods.
 
-    NOTE: This test server is not guaranteed to always be available, and
-    the data in it may be out of sync with the data on the live system.
+    .. note::
+      This test server is not guaranteed to always be available, and the data
+      on it may be out of sync with the data on the live system.
+
+    **Returns**
+      :any:`IbisClientConnection`
+        A new connection to the Lookup test server.
     """
     return IbisClientConnection("lookup-test.csx.cam.ac.uk", 443, "", True)
 
@@ -308,9 +356,15 @@ def createLocalConnection():
     locally on https://localhost:8443/ibis/.
 
     The connection is initially anonymous, but this may be changed using
-    its set_username() and set_password() methods.
+    its :any:`set_username() <IbisClientConnection.set_username>` and
+    :any:`set_password() <IbisClientConnection.set_password>` methods.
 
     This is intended for testing during development. The local server is
     assumed to be using self-signed certificates, which will not be checked.
+
+    **Returns**
+      :any:`IbisClientConnection`
+        A new connection to a Lookup server assumed to be running on
+        localhost.
     """
     return IbisClientConnection("localhost", 8443, "ibis", False)

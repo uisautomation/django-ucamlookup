@@ -21,7 +21,7 @@
 
 """
 Web service API methods. This module is fully auto-generated, and contains
-the Python equivalent of the XxxMethods Java classes for executing all API
+the Python equivalent of the `XxxMethods` Java classes for executing all API
 methods.
 """
 
@@ -31,7 +31,7 @@ class IbisMethods:
     """
     Common methods for searching for objects in the Lookup/Ibis database.
 
-    @author Dean Rasheed (dev-group@ucs.cam.ac.uk)
+    .. codeauthor:: Dean Rasheed (dev-group@ucs.cam.ac.uk)
     """
     def __init__(self, conn):
         self.conn = conn
@@ -40,9 +40,11 @@ class IbisMethods:
         """
         Get the current API version number.
 
-        [ HTTP: GET /api/v1/version ]
+        ``[ HTTP: GET /api/v1/version ]``
 
-        @return The API version number string.
+        **Returns**
+          str
+            The API version number string.
         """
         path = "api/v1/version"
         path_params = {}
@@ -58,54 +60,65 @@ class GroupMethods:
     """
     Methods for querying and manipulating groups.
 
-    The fetch parameter for groups
+    **The fetch parameter for groups**
 
-    All methods that return groups also accept an optional fetch
+    All methods that return groups also accept an optional `fetch`
     parameter that may be used to request additional information about the
     groups returned. For more details about the general rules that apply to
-    the fetch parameter, refer to the {@link PersonMethods}
+    the `fetch` parameter, refer to the :any:`PersonMethods`
     documentation.
 
-    For groups the fetch parameter may be used to fetch references
+    For groups the `fetch` parameter may be used to fetch references
     to people, institutions or other groups. In each case, only non-cancelled
     people, institutions and groups will be included when fetching references.
     The following references are supported:
 
-    * "all_members" - fetches all the people who are members of the group,
-    including members of groups included by the group, and groups included
-    by those groups, and so on.
-    * "direct_members" - fetches all the poeple who are direct members of
-    the group, not taking into account any included groups.
-    * "members_of_inst" - if the group is a membership group for an
-    institution, this fetches that institution.
-    * "owning_insts" - fetches all the institutions to which the group
-    belongs.
-    * "manages_insts" - fetches all the institutions that the group
-    manages. Typically this only applies to "Editor" groups.
-    * "manages_groups" - fetches all the groups that this group manages.
-    Note that some groups are self-managed, so this may be a
-    self-reference.
-    * "managed_by_groups" - fetches all the groups that manage this
-    group.
-    * "reads_groups" - fetches all the groups that this group has
-    privileged access to. This means that members of this group can see the
-    members of the referenced groups regardless of the membership visibility
-    settings.
-    * "read_by_groups" - fetches all the groups that have privileged
-    access to this group.
-    * "includes_groups" - fetches all the groups included by this group.
-    * "included_by_groups" - fetches all the groups that include this
-    group.
+    * ``"all_members"`` - fetches all the people who are members of the
+      group, including members of groups included by the group, and groups
+      included by those groups, and so on.
 
-    As with person fetch parameters, the references may be used
+    * ``"direct_members"`` - fetches all the poeple who are direct
+      members of the group, not taking into account any included groups.
+
+    * ``"members_of_inst"`` - if the group is a membership group for an
+      institution, this fetches that institution.
+
+    * ``"owning_insts"`` - fetches all the institutions to which the
+      group belongs.
+
+    * ``"manages_insts"`` - fetches all the institutions that the group
+      manages. Typically this only applies to "Editor" groups.
+
+    * ``"manages_groups"`` - fetches all the groups that this group
+      manages. Note that some groups are self-managed, so this may be a
+      self-reference.
+
+    * ``"managed_by_groups"`` - fetches all the groups that manage this
+      group.
+
+    * ``"reads_groups"`` - fetches all the groups that this group has
+      privileged access to. This means that members of this group can see the
+      members of the referenced groups regardless of the membership visibility
+      settings.
+
+    * ``"read_by_groups"`` - fetches all the groups that have privileged
+      access to this group.
+
+    * ``"includes_groups"`` - fetches all the groups included by this
+      group.
+
+    * ``"included_by_groups"`` - fetches all the groups that include
+      this group.
+
+    As with person `fetch` parameters, the references may be used
     in a chain by using the "dot" notation to fetch additional information
     about referenced people, institutions or groups. For example
-    "all_members.email" will fetch the email addresses of all members of the
-    group. For more information about what can be fetched from referenced
-    people and institutions, refer to the documentation for
-    {@link PersonMethods} and {@link InstitutionMethods}.
+    ``"all_members.email"`` will fetch the email addresses of all members
+    of the group. For more information about what can be fetched from
+    referenced people and institutions, refer to the documentation for
+    :any:`PersonMethods` and :any:`InstitutionMethods`.
 
-    @author Dean Rasheed (dev-group@ucs.cam.ac.uk)
+    .. codeauthor:: Dean Rasheed (dev-group@ucs.cam.ac.uk)
     """
     def __init__(self, conn):
         self.conn = conn
@@ -117,17 +130,23 @@ class GroupMethods:
         Return a list of all groups.
 
         By default, only a few basic details about each group are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references.
 
-        [ HTTP: GET /api/v1/group/all-groups ]
+        ``[ HTTP: GET /api/v1/group/all-groups ]``
 
-        @param includeCancelled [optional] Whether or not to include cancelled
-        groups. By default, only live groups are returned.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `includeCancelled` : bool
+            [optional] Whether or not to include cancelled
+            groups. By default, only live groups are returned.
 
-        @return The requested groups (in groupid order).
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisGroup`
+            The requested groups (in groupid order).
         """
         path = "api/v1/group/all-groups"
         path_params = {}
@@ -147,28 +166,36 @@ class GroupMethods:
         Get the groups with the specified IDs or names.
 
         By default, only a few basic details about each group are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references.
 
         The results are sorted by groupid.
 
-        NOTE: The URL path length is limited to around 8000 characters,
-        which limits the number of groups that this method can fetch. Group
-        IDs are currently 6 characters long, and must be comma separated and
-        URL encoded, which limits this method to around 800 groups by ID,
-        but probably fewer by name, depending on the group name lengths.
+        .. note::
+          The URL path length is limited to around 8000 characters,
+          which limits the number of groups that this method can fetch. Group
+          IDs are currently 6 characters long, and must be comma separated and
+          URL encoded, which limits this method to around 800 groups by ID,
+          but probably fewer by name, depending on the group name lengths.
 
-        NOTE: The groups returned may include cancelled groups. It is the
-        caller's repsonsibility to check their cancelled flags.
+        .. note::
+          The groups returned may include cancelled groups. It is the
+          caller's repsonsibility to check their cancelled flags.
 
-        [ HTTP: GET /api/v1/group/list?groupids=... ]
+        ``[ HTTP: GET /api/v1/group/list?groupids=... ]``
 
-        @param groupids [required] A comma-separated list of group IDs or
-        group names (may be a mix of both).
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `groupids` : str
+            [required] A comma-separated list of group IDs or
+            group names (may be a mix of both).
 
-        @return The requested groups (in groupid order).
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisGroup`
+            The requested groups (in groupid order).
         """
         path = "api/v1/group/list"
         path_params = {}
@@ -194,27 +221,44 @@ class GroupMethods:
         search function that is used in the Lookup web application.
 
         By default, only a few basic details about each group are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references.
 
-        [ HTTP: GET /api/v1/group/search?query=... ]
+        ``[ HTTP: GET /api/v1/group/search?query=... ]``
 
-        @param query [required] The search string.
-        @param approxMatches [optional] Flag to enable more approximate
-        matching in the search, causing more results to be returned. Defaults
-        to false.
-        @param includeCancelled [optional] Flag to allow cancelled groups to
-        be included. Defaults to false.
-        @param offset [optional] The number of results to skip at the start
-        of the search. Defaults to 0.
-        @param limit [optional] The maximum number of results to return.
-        Defaults to 100.
-        @param orderBy [optional] The order in which to list the results.
-        This may be "groupid", "name" (the default) or "title".
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `query` : str
+            [required] The search string.
 
-        @return The matching groups.
+          `approxMatches` : bool
+            [optional] Flag to enable more approximate
+            matching in the search, causing more results to be returned. Defaults
+            to false.
+
+          `includeCancelled` : bool
+            [optional] Flag to allow cancelled groups to
+            be included. Defaults to false.
+
+          `offset` : int
+            [optional] The number of results to skip at the start
+            of the search. Defaults to 0.
+
+          `limit` : int
+            [optional] The maximum number of results to return.
+            Defaults to 100.
+
+          `orderBy` : str
+            [optional] The order in which to list the results.
+            This may be ``"groupid"``, ``"name"`` (the default) or
+            ``"title"``.
+
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisGroup`
+            The matching groups.
         """
         path = "api/v1/group/search"
         path_params = {}
@@ -240,16 +284,24 @@ class GroupMethods:
         Count the number of groups that would be returned by a search using
         a free text query string.
 
-        [ HTTP: GET /api/v1/group/search-count?query=... ]
+        ``[ HTTP: GET /api/v1/group/search-count?query=... ]``
 
-        @param query [required] The search string.
-        @param approxMatches [optional] Flag to enable more approximate
-        matching in the search, causing more results to be returned. Defaults
-        to false.
-        @param includeCancelled [optional] Flag to allow cancelled groups to
-        be included. Defaults to false.
+        **Parameters**
+          `query` : str
+            [required] The search string.
 
-        @return The number of matching groups.
+          `approxMatches` : bool
+            [optional] Flag to enable more approximate
+            matching in the search, causing more results to be returned. Defaults
+            to false.
+
+          `includeCancelled` : bool
+            [optional] Flag to allow cancelled groups to
+            be included. Defaults to false.
+
+        **Returns**
+          int
+            The number of matching groups.
         """
         path = "api/v1/group/search-count"
         path_params = {}
@@ -270,21 +322,28 @@ class GroupMethods:
         Get the group with the specified ID or name.
 
         By default, only a few basic details about the group are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references of the group.
 
-        NOTE: The group returned may be a cancelled group. It is the caller's
-        repsonsibility to check its cancelled flag.
+        .. note::
+          The group returned may be a cancelled group. It is the caller's
+          repsonsibility to check its cancelled flag.
 
-        [ HTTP: GET /api/v1/group/{groupid} ]
+        ``[ HTTP: GET /api/v1/group/{groupid} ]``
 
-        @param groupid [required] The ID or name of the group to fetch. This
-        may be either the numeric ID or the short hyphenated group name (for
-        example "100656" or "cs-editors").
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `groupid` : str
+            [required] The ID or name of the group to fetch. This
+            may be either the numeric ID or the short hyphenated group name (for
+            example ``"100656"`` or ``"cs-editors"``).
 
-        @return The requested group or null if it was not found.
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          :any:`IbisGroup`
+            The requested group or ``None`` if it was not found.
         """
         path = "api/v1/group/%(groupid)s"
         path_params = {"groupid": groupid}
@@ -305,24 +364,31 @@ class GroupMethods:
         by those groups, and so on.
 
         By default, only a few basic details about each member are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references of each person.
 
-        NOTE: This method returns only cancelled people. It does not include
-        people who were removed from the group. Cancelled people are no longer
-        considered to be current staff, students or accredited visitors, and
-        are no longer regarded as belonging to any groups or institutions. The
-        list returned here reflects their group memberships just before they
-        were cancelled, and so is out-of-date data that should be used with
-        caution.
+        .. note::
+          This method returns only cancelled people. It does not include
+          people who were removed from the group. Cancelled people are no longer
+          considered to be current staff, students or accredited visitors, and
+          are no longer regarded as belonging to any groups or institutions. The
+          list returned here reflects their group memberships just before they
+          were cancelled, and so is out-of-date data that should be used with
+          caution.
 
-        [ HTTP: GET /api/v1/group/{groupid}/cancelled-members ]
+        ``[ HTTP: GET /api/v1/group/{groupid}/cancelled-members ]``
 
-        @param groupid [required] The ID or name of the group.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch for each person.
+        **Parameters**
+          `groupid` : str
+            [required] The ID or name of the group.
 
-        @return The group's cancelled members (in identifier order).
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch for each person.
+
+        **Returns**
+          list of :any:`IbisPerson`
+            The group's cancelled members (in identifier order).
         """
         path = "api/v1/group/%(groupid)s/cancelled-members"
         path_params = {"groupid": groupid}
@@ -342,18 +408,25 @@ class GroupMethods:
         included via groups included by the group.
 
         By default, only a few basic details about each member are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references of each person.
 
-        NOTE: This method will not include cancelled people.
+        .. note::
+          This method will not include cancelled people.
 
-        [ HTTP: GET /api/v1/group/{groupid}/direct-members ]
+        ``[ HTTP: GET /api/v1/group/{groupid}/direct-members ]``
 
-        @param groupid [required] The ID or name of the group.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch for each person.
+        **Parameters**
+          `groupid` : str
+            [required] The ID or name of the group.
 
-        @return The group's direct members (in identifier order).
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch for each person.
+
+        **Returns**
+          list of :any:`IbisPerson`
+            The group's direct members (in identifier order).
         """
         path = "api/v1/group/%(groupid)s/direct-members"
         path_params = {"groupid": groupid}
@@ -376,37 +449,56 @@ class GroupMethods:
         inclusion of other groups.
 
         Any non-cancelled people in the list of identifiers specified by
-        {@code addIds} will be added to the group. This list should be a
+        `addIds` will be added to the group. This list should be a
         comma-separated list of identifiers, each of which may be either a
         CRSid or an identifier from another identifier scheme, prefixed with
-        that scheme's name and a slash. For example "mug99" or "usn/123456789".
+        that scheme's name and a slash. For example ``"mug99"`` or
+        ``"usn/123456789"``.
 
-        Any people in the list of identifiers specified by {@code removeIds}
+        Any people in the list of identifiers specified by `removeIds`
         will be removed from the group, except if they are also in the list
-        {@code addIds}. The special identifier "all-members" may be used to
-        remove all existing group members, replacing them with the list
-        specified by {@code newIds}.
+        `addIds`. The special identifier ``"all-members"`` may be
+        used to remove all existing group members, replacing them with the
+        list specified by `newIds`.
 
-        Examples:
+        **Examples:**
 
-        updateDirectMembers("test-group", "mug99,crsid/yyy99,usn/123456789", "xxx99",
-                            "Remove xxx99 and add mug99, yyy99 and usn/123456789 to test-group");
+        .. code-block:: python
 
-        updateDirectMembers("test-group", "xxx99,yyy99", "all-members",
-                            "Set the membership of test-group to include only xxx99 and yyy99");
+          updateDirectMembers("test-group",
+                              "mug99,crsid/yyy99,usn/123456789",
+                              "xxx99",
+                              "Remove xxx99 and add mug99, yyy99 and usn/123456789 to test-group");
 
-        [ HTTP: PUT /api/v1/group/{groupid}/direct-members ]
+        .. code-block:: python
 
-        @param groupid [required] The ID or name of the group.
-        @param addIds [optional] The identifiers of people to add to the group.
-        @param removeIds [optional] The identifiers of people to remove from
-        the group.
-        @param commitComment [recommended] A short textual description of
-        the change made (will be visible on the history tab of the group and
-        all the affected people in the web application).
+          updateDirectMembers("test-group",
+                              "xxx99,yyy99",
+                              "all-members",
+                              "Set the membership of test-group to include only xxx99 and yyy99");
 
-        @return The updated list of direct members of the group (in identifier
-        order).
+        ``[ HTTP: PUT /api/v1/group/{groupid}/direct-members ]``
+
+        **Parameters**
+          `groupid` : str
+            [required] The ID or name of the group.
+
+          `addIds` : str
+            [optional] The identifiers of people to add to the group.
+
+          `removeIds` : str
+            [optional] The identifiers of people to remove from
+            the group.
+
+          `commitComment` : str
+            [recommended] A short textual description of
+            the change made (will be visible on the history tab of the group and
+            all the affected people in the web application).
+
+        **Returns**
+          list of :any:`IbisPerson`
+            The updated list of direct members of the group (in identifier
+            order).
         """
         path = "api/v1/group/%(groupid)s/direct-members"
         path_params = {"groupid": groupid}
@@ -429,18 +521,25 @@ class GroupMethods:
         and so on.
 
         By default, only a few basic details about each member are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references of each person.
 
-        NOTE: This method will not include cancelled people.
+        .. note::
+          This method will not include cancelled people.
 
-        [ HTTP: GET /api/v1/group/{groupid}/members ]
+        ``[ HTTP: GET /api/v1/group/{groupid}/members ]``
 
-        @param groupid [required] The ID or name of the group.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch for each person.
+        **Parameters**
+          `groupid` : str
+            [required] The ID or name of the group.
 
-        @return The group's members (in identifier order).
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch for each person.
+
+        **Returns**
+          list of :any:`IbisPerson`
+            The group's members (in identifier order).
         """
         path = "api/v1/group/%(groupid)s/members"
         path_params = {"groupid": groupid}
@@ -456,58 +555,67 @@ class InstitutionMethods:
     """
     Methods for querying and manipulating institutions.
 
-    The fetch parameter for institutions
+    **The fetch parameter for institutions**
 
     All methods that return institutions also accept an optional
-    fetch parameter that may be used to request additional
+    `fetch` parameter that may be used to request additional
     information about the institutions returned. For more details about
-    the general rules that apply to the fetch parameter,
-    refer to the {@link PersonMethods} documentation.
+    the general rules that apply to the `fetch` parameter,
+    refer to the :any:`PersonMethods` documentation.
 
-    For institutions the fetch parameter may be used to fetch
-    any institution attribute by specifying the schemeid of an
-    institution attribute scheme. Examples include "address", "jpegPhoto",
-    "universityPhone", "instPhone", "landlinePhone", "mobilePhone",
-    "faxNumber", "email" and "labeledURI". The full list (which may be
-    extended over time) may be obtained using {@link #allAttributeSchemes}.
+    For institutions the `fetch` parameter may be used to fetch
+    any institution attribute by specifying the `schemeid` of an
+    institution attribute scheme. Examples include ``"address"``,
+    ``"jpegPhoto"``, ``"universityPhone"``, ``"instPhone"``,
+    ``"landlinePhone"``, ``"mobilePhone"``, ``"faxNumber"``,
+    ``"email"`` and ``"labeledURI"``. The full list (which may be
+    extended over time) may be obtained using :any:`InstitutionMethods.allAttributeSchemes()`.
 
     In addition the following pseudo-attributes are supported:
 
-    * "phone_numbers" - fetches all phone numbers. This is equivalent to
-    "universityPhone,instPhone,landlinePhone,mobilePhone".
-    * "all_attrs" - fetches all attributes from all institution attribute
-    schemes. This does not include references.
-    * "contact_rows" - fetches all institution contact rows. Any chained
-    fetches from contact rows are used to fetch attributes from any people
-    referred to by the contact rows.
+    * ``"phone_numbers"`` - fetches all phone numbers. This is
+      equivalent to
+      ``"universityPhone,instPhone,landlinePhone,mobilePhone"``.
 
-    The fetch parameter may also be used to fetch referenced
+    * ``"all_attrs"`` - fetches all attributes from all institution
+      attribute schemes. This does not include references.
+
+    * ``"contact_rows"`` - fetches all institution contact rows. Any
+      chained fetches from contact rows are used to fetch attributes from any
+      people referred to by the contact rows.
+
+    The `fetch` parameter may also be used to fetch referenced
     people, institutions or groups. This will only include references to
     non-cancelled entities. The following references are supported:
 
-    * "all_members" - fetches all the people who are members of the
-    institution.
-    * "parent_insts" - fetches all the parent institutions. Note that
-    currently all institutions have only one parent, but this may change in
-    the future, and client applications should be prepared to handle multiple
-    parents.
-    * "child_insts" - fetches all the child institutions.
-    * "inst_groups" - fetches all the groups that belong to the
-    institution.
-    * "members_groups" - fetches all the groups that form the institution's
-    membership list.
-    * "managed_by_groups" - fetches all the groups that manage the
-    institution's data (commonly called "Editor" groups).
+    * ``"all_members"`` - fetches all the people who are members of the
+      institution.
 
-    As with person fetch parameters, the references may be used
+    * ``"parent_insts"`` - fetches all the parent institutions. Note
+      that currently all institutions have only one parent, but this may change
+      in the future, and client applications should be prepared to handle
+      multiple parents.
+
+    * ``"child_insts"`` - fetches all the child institutions.
+
+    * ``"inst_groups"`` - fetches all the groups that belong to the
+      institution.
+
+    * ``"members_groups"`` - fetches all the groups that form the
+      institution's membership list.
+
+    * ``"managed_by_groups"`` - fetches all the groups that manage the
+      institution's data (commonly called "Editor" groups).
+
+    As with person `fetch` parameters, the references may be used
     in a chain by using the "dot" notation to fetch additional information
     about referenced people, institutions or groups. For example
-    "all_members.email" will fetch the email addresses of all members of the
-    institution. For more information about what can be fetched from
+    ``"all_members.email"`` will fetch the email addresses of all members
+    of the institution. For more information about what can be fetched from
     referenced people and groups, refer to the documentation for
-    {@link PersonMethods} and {@link GroupMethods}.
+    :any:`PersonMethods` and :any:`GroupMethods`.
 
-    @author Dean Rasheed (dev-group@ucs.cam.ac.uk)
+    .. codeauthor:: Dean Rasheed (dev-group@ucs.cam.ac.uk)
     """
     def __init__(self, conn):
         self.conn = conn
@@ -515,13 +623,15 @@ class InstitutionMethods:
     def allAttributeSchemes(self):
         """
         Return a list of all the institution attribute schemes available.
-        The "schemeid" values of these schemes may be used in the
-        fetch parameter of other methods that return institutions.
+        The `schemeid` values of these schemes may be used in the
+        `fetch` parameter of other methods that return institutions.
 
-        [ HTTP: GET /api/v1/inst/all-attr-schemes ]
+        ``[ HTTP: GET /api/v1/inst/all-attr-schemes ]``
 
-        @return All the available institution attribute schemes (in precedence
-        order).
+        **Returns**
+          list of :any:`IbisAttributeScheme`
+            All the available institution attribute schemes (in precedence
+            order).
         """
         path = "api/v1/inst/all-attr-schemes"
         path_params = {}
@@ -540,17 +650,23 @@ class InstitutionMethods:
         Return a list of all institutions.
 
         By default, only a few basic details about each institution are
-        returned, but the optional fetch parameter may be used
+        returned, but the optional `fetch` parameter may be used
         to fetch additional attributes or references.
 
-        [ HTTP: GET /api/v1/inst/all-insts ]
+        ``[ HTTP: GET /api/v1/inst/all-insts ]``
 
-        @param includeCancelled [optional] Whether or not to include cancelled
-        institutions. By default, only live institutions are returned.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `includeCancelled` : bool
+            [optional] Whether or not to include cancelled
+            institutions. By default, only live institutions are returned.
 
-        @return The requested institutions (in instid order).
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisInstitution`
+            The requested institutions (in instid order).
         """
         path = "api/v1/inst/all-insts"
         path_params = {}
@@ -570,26 +686,34 @@ class InstitutionMethods:
         Get the institutions with the specified IDs.
 
         By default, only a few basic details about each institution are
-        returned, but the optional fetch parameter may be used
+        returned, but the optional `fetch` parameter may be used
         to fetch additional attributes or references.
 
         The results are sorted by ID.
 
-        NOTE: The URL path length is limited to around 8000 characters, and
-        an instid is up to 8 characters long. Allowing for comma separators
-        and URL encoding, this limits the number of institutions that this
-        method may fetch to around 700.
+        .. note::
+          The URL path length is limited to around 8000 characters, and
+          an instid is up to 8 characters long. Allowing for comma separators
+          and URL encoding, this limits the number of institutions that this
+          method may fetch to around 700.
 
-        NOTE: The institutions returned may include cancelled institutions.
-        It is the caller's repsonsibility to check their cancelled flags.
+        .. note::
+          The institutions returned may include cancelled institutions.
+          It is the caller's repsonsibility to check their cancelled flags.
 
-        [ HTTP: GET /api/v1/inst/list?instids=... ]
+        ``[ HTTP: GET /api/v1/inst/list?instids=... ]``
 
-        @param instids [required] A comma-separated list of instids.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `instids` : str
+            [required] A comma-separated list of instids.
 
-        @return The requested institutions (in instid order).
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisInstitution`
+            The requested institutions (in instid order).
         """
         path = "api/v1/inst/list"
         path_params = {}
@@ -616,30 +740,48 @@ class InstitutionMethods:
         same search function that is used in the Lookup web application.
 
         By default, only a few basic details about each institution are
-        returned, but the optional fetch parameter may be used
+        returned, but the optional `fetch` parameter may be used
         to fetch additional attributes or references.
 
-        [ HTTP: GET /api/v1/inst/search?query=... ]
+        ``[ HTTP: GET /api/v1/inst/search?query=... ]``
 
-        @param query [required] The search string.
-        @param approxMatches [optional] Flag to enable more approximate
-        matching in the search, causing more results to be returned. Defaults
-        to false.
-        @param includeCancelled [optional] Flag to allow cancelled institutions
-        to be included. Defaults to false.
-        @param attributes [optional] A comma-separated list of attributes to
-        consider when searching. If this is NULL (the default) then all
-        attribute schemes marked as searchable will be included.
-        @param offset [optional] The number of results to skip at the start
-        of the search. Defaults to 0.
-        @param limit [optional] The maximum number of results to return.
-        Defaults to 100.
-        @param orderBy [optional] The order in which to list the results.
-        This may be either "instid" or "name" (the default).
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `query` : str
+            [required] The search string.
 
-        @return The matching institutions.
+          `approxMatches` : bool
+            [optional] Flag to enable more approximate
+            matching in the search, causing more results to be returned. Defaults
+            to false.
+
+          `includeCancelled` : bool
+            [optional] Flag to allow cancelled institutions
+            to be included. Defaults to false.
+
+          `attributes` : str
+            [optional] A comma-separated list of attributes to
+            consider when searching. If this is ``None`` (the default) then
+            all attribute schemes marked as searchable will be included.
+
+          `offset` : int
+            [optional] The number of results to skip at the start
+            of the search. Defaults to 0.
+
+          `limit` : int
+            [optional] The maximum number of results to return.
+            Defaults to 100.
+
+          `orderBy` : str
+            [optional] The order in which to list the results.
+            This may be either ``"instid"`` or ``"name"`` (the default).
+
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisInstitution`
+            The matching institutions.
         """
         path = "api/v1/inst/search"
         path_params = {}
@@ -667,19 +809,29 @@ class InstitutionMethods:
         Count the number of institutions that would be returned by a search
         using a free text query string.
 
-        [ HTTP: GET /api/v1/inst/search-count?query=... ]
+        ``[ HTTP: GET /api/v1/inst/search-count?query=... ]``
 
-        @param query [required] The search string.
-        @param approxMatches [optional] Flag to enable more approximate
-        matching in the search, causing more results to be returned. Defaults
-        to false.
-        @param includeCancelled [optional] Flag to allow cancelled institutions
-        to be included. Defaults to false.
-        @param attributes [optional] A comma-separated list of attributes to
-        consider when searching. If this is NULL (the default) then all
-        attribute schemes marked as searchable will be included.
+        **Parameters**
+          `query` : str
+            [required] The search string.
 
-        @return The number of matching institutions.
+          `approxMatches` : bool
+            [optional] Flag to enable more approximate
+            matching in the search, causing more results to be returned. Defaults
+            to false.
+
+          `includeCancelled` : bool
+            [optional] Flag to allow cancelled institutions
+            to be included. Defaults to false.
+
+          `attributes` : str
+            [optional] A comma-separated list of attributes to
+            consider when searching. If this is ``None`` (the default) then
+            all attribute schemes marked as searchable will be included.
+
+        **Returns**
+          int
+            The number of matching institutions.
         """
         path = "api/v1/inst/search-count"
         path_params = {}
@@ -701,19 +853,26 @@ class InstitutionMethods:
         Get the institution with the specified ID.
 
         By default, only a few basic details about the institution are
-        returned, but the optional fetch parameter may be used
+        returned, but the optional `fetch` parameter may be used
         to fetch additional attributes or references of the institution.
 
-        NOTE: The institution returned may be a cancelled institution. It is
-        the caller's repsonsibility to check its cancelled flag.
+        .. note::
+          The institution returned may be a cancelled institution. It is
+          the caller's repsonsibility to check its cancelled flag.
 
-        [ HTTP: GET /api/v1/inst/{instid} ]
+        ``[ HTTP: GET /api/v1/inst/{instid} ]``
 
-        @param instid [required] The ID of the institution to fetch.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `instid` : str
+            [required] The ID of the institution to fetch.
 
-        @return The requested institution or null if it was not found.
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          :any:`IbisInstitution`
+            The requested institution or ``None`` if it was not found.
         """
         path = "api/v1/inst/%(instid)s"
         path_params = {"instid": instid}
@@ -739,23 +898,35 @@ class InstitutionMethods:
         In addition, either its value or its binaryData field should be set.
         All the remaining fields of the attribute are optional.
 
-        [ HTTP: POST /api/v1/inst/{instid}/add-attribute ]
+        ``[ HTTP: POST /api/v1/inst/{instid}/add-attribute ]``
 
-        @param instid [required] The ID of the institution.
-        @param attr [required] The new attribute to add.
-        @param position [optional] The position of the new attribute in the
-        list of attributes of the same attribute scheme (1, 2, 3,...). A value
-        of 0 (the default) will cause the new attribute to be added to the end
-        of the list of existing attributes for the scheme.
-        @param allowDuplicates [optional] If true, the new attribute will
-        always be added, even if another identical attribute already exists.
-        If false (the default), the new attribute will only be added if it
-        doesn't already exist.
-        @param commitComment [recommended] A short textual description of
-        the change made (will be visible on the history tab in the web
-        application).
+        **Parameters**
+          `instid` : str
+            [required] The ID of the institution.
 
-        @return The newly created or existing attribute.
+          `attr` : :any:`IbisAttribute`
+            [required] The new attribute to add.
+
+          `position` : int
+            [optional] The position of the new attribute in the
+            list of attributes of the same attribute scheme (1, 2, 3,...). A value
+            of 0 (the default) will cause the new attribute to be added to the end
+            of the list of existing attributes for the scheme.
+
+          `allowDuplicates` : bool
+            [optional] If true, the new attribute will
+            always be added, even if another identical attribute already exists.
+            If false (the default), the new attribute will only be added if it
+            doesn't already exist.
+
+          `commitComment` : str
+            [recommended] A short textual description of
+            the change made (will be visible on the history tab in the web
+            application).
+
+        **Returns**
+          :any:`IbisAttribute`
+            The newly created or existing attribute.
         """
         path = "api/v1/inst/%(instid)s/add-attribute"
         path_params = {"instid": instid}
@@ -777,24 +948,31 @@ class InstitutionMethods:
         Get all the cancelled members of the specified institution.
 
         By default, only a few basic details about each member are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references of each person.
 
-        NOTE: This method returns only cancelled people. It does not include
-        people who were removed from the institution. Cancelled people are no
-        longer considered to be current staff, students or accredited visitors,
-        and are no longer regarded as belonging to any groups or institutions.
-        The list returned here reflects their institutional memberships just
-        before they were cancelled, and so is out-of-date data that should be
-        used with caution.
+        .. note::
+          This method returns only cancelled people. It does not include
+          people who were removed from the institution. Cancelled people are no
+          longer considered to be current staff, students or accredited visitors,
+          and are no longer regarded as belonging to any groups or institutions.
+          The list returned here reflects their institutional memberships just
+          before they were cancelled, and so is out-of-date data that should be
+          used with caution.
 
-        [ HTTP: GET /api/v1/inst/{instid}/cancelled-members ]
+        ``[ HTTP: GET /api/v1/inst/{instid}/cancelled-members ]``
 
-        @param instid [required] The ID of the institution.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch for each person.
+        **Parameters**
+          `instid` : str
+            [required] The ID of the institution.
 
-        @return The institution's cancelled members (in identifier order).
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch for each person.
+
+        **Returns**
+          list of :any:`IbisPerson`
+            The institution's cancelled members (in identifier order).
         """
         path = "api/v1/inst/%(instid)s/cancelled-members"
         path_params = {"instid": instid}
@@ -818,19 +996,26 @@ class InstitutionMethods:
 
         If any of the contact rows refer to people, then only a few basic
         details about each person are returned, but the optional
-        fetch parameter may be used to fetch additional
+        `fetch` parameter may be used to fetch additional
         attributes or references of each person.
 
-        NOTE: This method will not include cancelled people.
+        .. note::
+          This method will not include cancelled people.
 
-        [ HTTP: GET /api/v1/inst/{instid}/contact-rows ]
+        ``[ HTTP: GET /api/v1/inst/{instid}/contact-rows ]``
 
-        @param instid [required] The ID of the institution.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch for any people referred to by any
-        of the contact rows.
+        **Parameters**
+          `instid` : str
+            [required] The ID of the institution.
 
-        @return The institution's contact rows.
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch for any people referred to by any
+            of the contact rows.
+
+        **Returns**
+          list of :any:`IbisContactRow`
+            The institution's contact rows.
         """
         path = "api/v1/inst/%(instid)s/contact-rows"
         path_params = {"instid": instid}
@@ -850,15 +1035,21 @@ class InstitutionMethods:
         The returned attributes are sorted by attribute scheme precedence and
         then attribute precedence.
 
-        [ HTTP: GET /api/v1/inst/{instid}/get-attributes?attrs=... ]
+        ``[ HTTP: GET /api/v1/inst/{instid}/get-attributes?attrs=... ]``
 
-        @param instid [required] The ID of the institution.
-        @param attrs [required] The attribute scheme(s) to fetch. This may
-        include any number of the attributes or pseudo-attributes, but it
-        may not include references or attribute chains (see the documentation
-        for the "fetch" parameter in this class).
+        **Parameters**
+          `instid` : str
+            [required] The ID of the institution.
 
-        @return The requested attributes.
+          `attrs` : str
+            [required] The attribute scheme(s) to fetch. This may
+            include any number of the attributes or pseudo-attributes, but it
+            may not include references or attribute chains (see the documentation
+            for the `fetch` parameter in this class).
+
+        **Returns**
+          list of :any:`IbisAttribute`
+            The requested attributes.
         """
         path = "api/v1/inst/%(instid)s/get-attributes"
         path_params = {"instid": instid}
@@ -877,18 +1068,25 @@ class InstitutionMethods:
         Get all the members of the specified institution.
 
         By default, only a few basic details about each member are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references of each person.
 
-        NOTE: This method will not include cancelled people.
+        .. note::
+          This method will not include cancelled people.
 
-        [ HTTP: GET /api/v1/inst/{instid}/members ]
+        ``[ HTTP: GET /api/v1/inst/{instid}/members ]``
 
-        @param instid [required] The ID of the institution.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch for each person.
+        **Parameters**
+          `instid` : str
+            [required] The ID of the institution.
 
-        @return The institution's members (in identifier order).
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch for each person.
+
+        **Returns**
+          list of :any:`IbisPerson`
+            The institution's members (in identifier order).
         """
         path = "api/v1/inst/%(instid)s/members"
         path_params = {"instid": instid}
@@ -900,18 +1098,66 @@ class InstitutionMethods:
             raise IbisException(result.error)
         return result.people
 
+    def deleteAttribute(self,
+                        instid,
+                        attrid,
+                        commitComment=None):
+        """
+        Delete an attribute of an institution. It is not an error if the
+        attribute does not exist.
+
+        Note that in this method, the `commitComment` is passed
+        as a query parameter, rather than as a form parameter, for greater
+        client compatibility.
+
+        ``[ HTTP: DELETE /api/v1/inst/{instid}/{attrid} ]``
+
+        **Parameters**
+          `instid` : str
+            [required] The ID of the institution.
+
+          `attrid` : long
+            [required] The ID of the attribute to delete.
+
+          `commitComment` : str
+            [recommended] A short textual description of
+            the change made (will be visible on the history tab in the web
+            application).
+
+        **Returns**
+          bool
+            True if the attribute was deleted by this method, or false
+            if it did not exist.
+        """
+        path = "api/v1/inst/%(instid)s/%(attrid)s"
+        path_params = {"instid": instid,
+                       "attrid": attrid}
+        query_params = {"commitComment": commitComment}
+        form_params = {}
+        result = self.conn.invoke_method("DELETE", path, path_params,
+                                         query_params, form_params)
+        if result.error:
+            raise IbisException(result.error)
+        return result.value and result.value.lower() == "true"
+
     def getAttribute(self,
                      instid,
                      attrid):
         """
         Get a specific attribute of an institution.
 
-        [ HTTP: GET /api/v1/inst/{instid}/{attrid} ]
+        ``[ HTTP: GET /api/v1/inst/{instid}/{attrid} ]``
 
-        @param instid [required] The ID of the institution.
-        @param attrid [required] The ID of the attribute to fetch.
+        **Parameters**
+          `instid` : str
+            [required] The ID of the institution.
 
-        @return The requested attribute.
+          `attrid` : long
+            [required] The ID of the attribute to fetch.
+
+        **Returns**
+          :any:`IbisAttribute`
+            The requested attribute.
         """
         path = "api/v1/inst/%(instid)s/%(attrid)s"
         path_params = {"instid": instid,
@@ -937,20 +1183,30 @@ class InstitutionMethods:
         left unchanged.
 
         To avoid inadvertently changing fields of the attribute, it is
-        recommended that {@link #getAttribute getAttribute()} be used to
+        recommended that :any:`getAttribute() <InstitutionMethods.getAttribute>` be used to
         retrieve the current value of the attribute, before calling this
         method with the required changes.
 
-        [ HTTP: PUT /api/v1/inst/{instid}/{attrid} ]
+        ``[ HTTP: PUT /api/v1/inst/{instid}/{attrid} ]``
 
-        @param instid [required] The ID of the institution.
-        @param attrid [required] The ID of the attribute to update.
-        @param attr [required] The new attribute values to apply.
-        @param commitComment [recommended] A short textual description of
-        the change made (will be visible on the history tab in the web
-        application).
+        **Parameters**
+          `instid` : str
+            [required] The ID of the institution.
 
-        @return The updated attribute.
+          `attrid` : long
+            [required] The ID of the attribute to update.
+
+          `attr` : :any:`IbisAttribute`
+            [required] The new attribute values to apply.
+
+          `commitComment` : str
+            [recommended] A short textual description of
+            the change made (will be visible on the history tab in the web
+            application).
+
+        **Returns**
+          :any:`IbisAttribute`
+            The updated attribute.
         """
         path = "api/v1/inst/%(instid)s/%(attrid)s"
         path_params = {"instid": instid,
@@ -964,122 +1220,94 @@ class InstitutionMethods:
             raise IbisException(result.error)
         return result.attribute
 
-    def deleteAttribute(self,
-                        instid,
-                        attrid,
-                        commitComment=None):
-        """
-        Delete an attribute of an institution. It is not an error if the
-        attribute does not exist.
-
-        Note that in this method, the commitComment is passed
-        as a query parameter, rather than as a form parameter, for greater
-        client compatibility.
-
-        [ HTTP: DELETE /api/v1/inst/{instid}/{attrid} ]
-
-        @param instid [required] The ID of the institution.
-        @param attrid [required] The ID of the attribute to delete.
-        @param commitComment [recommended] A short textual description of
-        the change made (will be visible on the history tab in the web
-        application).
-
-        @return True if the attribute was deleted by this method, or false
-        if it did not exist.
-        """
-        path = "api/v1/inst/%(instid)s/%(attrid)s"
-        path_params = {"instid": instid,
-                       "attrid": attrid}
-        query_params = {"commitComment": commitComment}
-        form_params = {}
-        result = self.conn.invoke_method("DELETE", path, path_params,
-                                         query_params, form_params)
-        if result.error:
-            raise IbisException(result.error)
-        return result.value and result.value.lower() == "true"
-
 class PersonMethods:
     """
     Methods for querying and manipulating people.
 
-    Notes on the fetch parameter
+    **Notes on the fetch parameter**
 
     All methods that return people, institutions or groups also accept an
-    optional fetch parameter that may be used to request
+    optional `fetch` parameter that may be used to request
     additional information about the entities returned. Without this
     parameter, only a few basic details about each person, institution or
-    group are returned. The fetch parameter is quite flexible,
+    group are returned. The `fetch` parameter is quite flexible,
     and may be used in a number of different ways:
 
-    * Attribute fetching. Attributes may be fetched by specifying the
-    schemeid of an attribute scheme. For example to fetch a
-    person's email addresses, use the value "email". For people common
-    attribute schemes include "jpegPhoto", "misAffiliation", "title",
-    "universityPhone", "mobexPhone", "landlinePhone", "mobilePhone", "pager",
-    "labeledURI" and "address". The full list of person attribute schemes may
-    be obtained using {@link #allAttributeSchemes}.
+    * **Attribute fetching**. Attributes may be fetched by specifying the
+      `schemeid` of an attribute scheme. For example to fetch a
+      person's email addresses, use the value ``"email"``. For people common
+      attribute schemes include ``"jpegPhoto"``, ``"misAffiliation"``,
+      ``"title"``, ``"universityPhone"``, ``"mobexPhone"``,
+      ``"landlinePhone"``, ``"mobilePhone"``, ``"pager"``,
+      ``"labeledURI"`` and ``"address"``. The full list of person
+      attribute schemes may be obtained using :any:`PersonMethods.allAttributeSchemes()`.
 
-    * Pseudo-attributes. Certain special pseudo-attributes are defined
-    for convenience. For people, the following pseudo-attributes are supported:
+    * **Pseudo-attributes**. Certain special pseudo-attributes are defined
+      for convenience. For people, the following pseudo-attributes are supported:
 
-    * "phone_numbers" - fetches all phone numbers. This is equivalent to
-    "universityPhone,instPhone,mobexPhone,landlinePhone,mobilePhone,pager".
-    * "all_identifiers" - fetches all identifiers. Currently people only
-    have CRSid identifiers, but in the future additional identifiers such
-    as USN or staffNumber may be added.
-    * "all_attrs" - fetches all attributes from all person attribute
-    schemes. This does not include identifiers or references.
+      * ``"phone_numbers"`` - fetches all phone numbers. This is
+        equivalent to
+        ``"universityPhone,instPhone,mobexPhone,landlinePhone,mobilePhone,pager"``.
 
-    * Reference fetching. For people, the following references are
-    supported (and will fetch only non-cancelled institutions and groups):
+      * ``"all_identifiers"`` - fetches all identifiers. Currently people
+        only have CRSid identifiers, but in the future additional identifiers such
+        as USN or staffNumber may be added.
 
-    * "all_insts" - fetches all the institutions to which the person
-    belongs (sorted in name order).
-    * "all_groups" - fetches all the groups that the person is a member
-    of, including indirect group memberships, via groups that include other
-    groups.
-    * "direct_groups" - fetches all the groups that the person is directly
-    a member of. This does not include indirect group memberships - i.e.,
-    groups that include these groups.
+      * ``"all_attrs"`` - fetches all attributes from all person attribute
+        schemes. This does not include identifiers or references.
 
-    * Chained reference fetching. To fetch properties of referenced
-    objects, the "dot" notation may be used. For example, to fetch the email
-    addresses of all the institutions to which a person belongs, use
-    "all_insts.email". Chains may include a number of reference following
-    steps, for example "all_insts.managed_by_groups.all_members.email" will
-    fetch all the institutions to which the person belongs, all the groups
-    that manage those institutions, all the visible members of those groups
-    and all the email addresses of those managing group members. For more
-    information about what can be fetched from referenced institutions and
-    groups, refer to the documentation for {@link InstitutionMethods} and
-    {@link GroupMethods}.
+    * **Reference fetching**. For people, the following references are
+      supported (and will fetch only non-cancelled institutions and groups):
 
-    Multiple values of the fetch parameter should be separated
+      * ``"all_insts"`` - fetches all the institutions to which the person
+        belongs (sorted in name order).
+
+      * ``"all_groups"`` - fetches all the groups that the person is a
+        member of, including indirect group memberships, via groups that include
+        other groups.
+
+      * ``"direct_groups"`` - fetches all the groups that the person is
+        directly a member of. This does not include indirect group memberships -
+        i.e., groups that include these groups.
+
+    * **Chained reference fetching**. To fetch properties of referenced
+      objects, the "dot" notation may be used. For example, to fetch the email
+      addresses of all the institutions to which a person belongs, use
+      ``"all_insts.email"``. Chains may include a number of reference
+      following steps, for example
+      ``"all_insts.managed_by_groups.all_members.email"`` will fetch all the
+      institutions to which the person belongs, all the groups that manage those
+      institutions, all the visible members of those groups and all the email
+      addresses of those managing group members. For more information about what
+      can be fetched from referenced institutions and groups, refer to the
+      documentation for :any:`InstitutionMethods` and :any:`GroupMethods`.
+
+    Multiple values of the `fetch` parameter should be separated
     by commas.
 
-    Fetch parameter examples
+    **Fetch parameter examples**
 
-    fetch = "email"
+    ``fetch = "email"``
     This fetches all the person's email addresses.
 
-    fetch = "title,address"
+    ``fetch = "title,address"``
     This fetches all the person's titles (roles) and addresses.
 
-    fetch = "all_attrs"
+    ``fetch = "all_attrs"``
     This fetches all the person's attributes.
 
-    fetch = "all_groups,all_insts"
+    ``fetch = "all_groups,all_insts"``
     This fetches all the groups and institutions to which the person belongs.
 
-    fetch = "all_insts.parent_insts"
+    ``fetch = "all_insts.parent_insts"``
     This fetches all the person's institutions, and their parent institutions.
 
-    fetch = "all_insts.email,all_insts.all_members.email"
+    ``fetch = "all_insts.email,all_insts.all_members.email"``
     This fetches all the person's institutions and their email addresses, and
     all the members of those institutions, and the email addresses of all
     those members.
 
-    @author Dean Rasheed (dev-group@ucs.cam.ac.uk)
+    .. codeauthor:: Dean Rasheed (dev-group@ucs.cam.ac.uk)
     """
     def __init__(self, conn):
         self.conn = conn
@@ -1087,17 +1315,20 @@ class PersonMethods:
     def allAttributeSchemes(self):
         """
         Return a list of all the person attribute schemes available. The
-        "schemeid" values of these schemes may be used in the
-        fetch parameter of other methods that return people.
+        `schemeid` values of these schemes may be used in the
+        `fetch` parameter of other methods that return people.
 
-        NOTE: Some of these attribute schemes are not currently used (no
-        people have attribute values in the scheme). These schemes are
-        reserved for possible future use.
+        .. note::
+          Some of these attribute schemes are not currently used (no
+          people have attribute values in the scheme). These schemes are
+          reserved for possible future use.
 
-        [ HTTP: GET /api/v1/person/all-attr-schemes ]
+        ``[ HTTP: GET /api/v1/person/all-attr-schemes ]``
 
-        @return All the available person attribute schemes (in precedence
-        order).
+        **Returns**
+          list of :any:`IbisAttributeScheme`
+            All the available person attribute schemes (in precedence
+            order).
         """
         path = "api/v1/person/all-attr-schemes"
         path_params = {}
@@ -1117,31 +1348,39 @@ class PersonMethods:
 
         Each identifier may be either a CRSid, or an identifier from another
         identifier scheme, prefixed with that scheme's name and a slash. For
-        example "mug99" or "usn/123456789".
+        example ``"mug99"`` or ``"usn/123456789"``.
 
         By default, only a few basic details about each person are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references.
 
         The results are sorted by identifier scheme and value.
 
-        NOTE: The number of people that may be fetched in a single call is
-        limited by the URL path length limit (around 8000 characters). A
-        CRSid is up to 7 characters long, and other identifiers are typically
-        longer, since they must also include the identifier scheme. Thus the
-        number of people that this method may fetch is typically limited to a
-        few hundred.
+        .. note::
+          The number of people that may be fetched in a single call is
+          limited by the URL path length limit (around 8000 characters). A
+          CRSid is up to 7 characters long, and other identifiers are typically
+          longer, since they must also include the identifier scheme. Thus the
+          number of people that this method may fetch is typically limited to a
+          few hundred.
 
-        NOTE: The people returned may include cancelled people. It is the
-        caller's repsonsibility to check their cancelled flags.
+        .. note::
+          The people returned may include cancelled people. It is the
+          caller's repsonsibility to check their cancelled flags.
 
-        [ HTTP: GET /api/v1/person/list?crsids=... ]
+        ``[ HTTP: GET /api/v1/person/list?crsids=... ]``
 
-        @param crsids [required] A comma-separated list of identifiers.
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `crsids` : str
+            [required] A comma-separated list of identifiers.
 
-        @return The requested people (in identifier order).
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisPerson`
+            The requested people (in identifier order).
         """
         path = "api/v1/person/list"
         path_params = {}
@@ -1169,41 +1408,65 @@ class PersonMethods:
         search function that is used in the Lookup web application.
 
         By default, only a few basic details about each person are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references.
 
-        [ HTTP: GET /api/v1/person/search?query=... ]
+        ``[ HTTP: GET /api/v1/person/search?query=... ]``
 
-        @param query [required] The search string.
-        @param approxMatches [optional] Flag to enable more approximate
-        matching in the search, causing more results to be returned. Defaults
-        to false.
-        @param includeCancelled [optional] Flag to allow cancelled people to
-        be included (people who are no longer members of the University).
-        Defaults to false.
-        @param misStatus [optional] The type of people to search for. This may
-        be
+        **Parameters**
+          `query` : str
+            [required] The search string.
 
-        * "staff" - only include people whose MIS status is "" (empty
-        string), "staff", or "staff,student".
-        * "student" - only include people whose MIS status is set to
-        "student" or "staff,student".
+          `approxMatches` : bool
+            [optional] Flag to enable more approximate
+            matching in the search, causing more results to be returned. Defaults
+            to false.
 
-        Otherwise all matching people will be included (the default). Note
-        that the "staff" and "student" options are not mutually exclusive.
-        @param attributes [optional] A comma-separated list of attributes to
-        consider when searching. If this is NULL (the default) then all
-        attribute schemes marked as searchable will be included.
-        @param offset [optional] The number of results to skip at the start
-        of the search. Defaults to 0.
-        @param limit [optional] The maximum number of results to return.
-        Defaults to 100.
-        @param orderBy [optional] The order in which to list the results.
-        This may be either "identifier" or "surname" (the default).
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+          `includeCancelled` : bool
+            [optional] Flag to allow cancelled people to
+            be included (people who are no longer members of the University).
+            Defaults to false.
 
-        @return The matching people.
+          `misStatus` : str
+            [optional] The type of people to search for. This may
+            be
+
+            * ``"staff"`` - only include people whose MIS status is
+              ``""`` (empty string), ``"staff"``, or
+              ``"staff,student"``.
+
+            * ``"student"`` - only include people whose MIS status is set to
+              ``"student"`` or ``"staff,student"``.
+
+            Otherwise all matching people will be included (the default). Note
+            that the ``"staff"`` and ``"student"`` options are not
+            mutually exclusive.
+
+          `attributes` : str
+            [optional] A comma-separated list of attributes to
+            consider when searching. If this is ``None`` (the default) then
+            all attribute schemes marked as searchable will be included.
+
+          `offset` : int
+            [optional] The number of results to skip at the start
+            of the search. Defaults to 0.
+
+          `limit` : int
+            [optional] The maximum number of results to return.
+            Defaults to 100.
+
+          `orderBy` : str
+            [optional] The order in which to list the results.
+            This may be either ``"identifier"`` or ``"surname"`` (the
+            default).
+
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisPerson`
+            The matching people.
         """
         path = "api/v1/person/search"
         path_params = {}
@@ -1233,30 +1496,45 @@ class PersonMethods:
         Count the number of people that would be returned by a search using
         a free text query string.
 
-        [ HTTP: GET /api/v1/person/search-count?query=... ]
+        ``[ HTTP: GET /api/v1/person/search-count?query=... ]``
 
-        @param query [required] The search string.
-        @param approxMatches [optional] Flag to enable more approximate
-        matching in the search, causing more results to be returned. Defaults
-        to false.
-        @param includeCancelled [optional] Flag to allow cancelled people to
-        be included (people who are no longer members of the University).
-        Defaults to false.
-        @param misStatus [optional] The type of people to search for. This may
-        be
+        **Parameters**
+          `query` : str
+            [required] The search string.
 
-        * "staff" - only include people whose MIS status is "" (empty
-        string), "staff", or "staff,student".
-        * "student" - only include people whose MIS status is set to
-        "student" or "staff,student".
+          `approxMatches` : bool
+            [optional] Flag to enable more approximate
+            matching in the search, causing more results to be returned. Defaults
+            to false.
 
-        Otherwise all matching people will be included (the default). Note
-        that the "staff" and "student" options are not mutually exclusive.
-        @param attributes [optional] A comma-separated list of attributes to
-        consider when searching. If this is NULL (the default) then all
-        attribute schemes marked as searchable will be included.
+          `includeCancelled` : bool
+            [optional] Flag to allow cancelled people to
+            be included (people who are no longer members of the University).
+            Defaults to false.
 
-        @return The number of matching people.
+          `misStatus` : str
+            [optional] The type of people to search for. This may
+            be
+
+            * ``"staff"`` - only include people whose MIS status is
+              ``""`` (empty string), ``"staff"``, or
+              ``"staff,student"``.
+
+            * ``"student"`` - only include people whose MIS status is set to
+              ``"student"`` or ``"staff,student"``.
+
+            Otherwise all matching people will be included (the default). Note
+            that the ``"staff"`` and ``"student"`` options are not
+            mutually exclusive.
+
+          `attributes` : str
+            [optional] A comma-separated list of attributes to
+            consider when searching. If this is ``None`` (the default) then
+            all attribute schemes marked as searchable will be included.
+
+        **Returns**
+          int
+            The number of matching people.
         """
         path = "api/v1/person/search-count"
         path_params = {}
@@ -1280,23 +1558,33 @@ class PersonMethods:
         Get the person with the specified identifier.
 
         By default, only a few basic details about the person are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references of the person.
 
-        NOTE: The person returned may be a cancelled person. It is the
-        caller's repsonsibility to check its cancelled flag.
+        .. note::
+          The person returned may be a cancelled person. It is the
+          caller's repsonsibility to check its cancelled flag.
 
-        [ HTTP: GET /api/v1/person/{scheme}/{identifier} ]
+        ``[ HTTP: GET /api/v1/person/{scheme}/{identifier} ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person to fetch
-        (typically their CRSid).
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return The requested person or null if they were not found.
+          `identifier` : str
+            [required] The identifier of the person to fetch
+            (typically their CRSid).
+
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          :any:`IbisPerson`
+            The requested person or ``None`` if they were not found.
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s"
         path_params = {"scheme": scheme,
@@ -1324,27 +1612,42 @@ class PersonMethods:
         In addition, either its value or its binaryData field should be set.
         All the remaining fields of the attribute are optional.
 
-        [ HTTP: POST /api/v1/person/{scheme}/{identifier}/add-attribute ]
+        ``[ HTTP: POST /api/v1/person/{scheme}/{identifier}/add-attribute ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person to udpate
-        (typically their CRSid).
-        @param attr [required] The new attribute to add.
-        @param position [optional] The position of the new attribute in the
-        list of attributes of the same attribute scheme (1, 2, 3,...). A value
-        of 0 (the default) will cause the new attribute to be added to the end
-        of the list of existing attributes for the scheme.
-        @param allowDuplicates [optional] If true, the new attribute will
-        always be added, even if another identical attribute already exists.
-        If false (the default), the new attribute will only be added if it
-        doesn't already exist.
-        @param commitComment [recommended] A short textual description of
-        the change made (will be visible on the history tab in the web
-        application).
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return The newly created or existing attribute.
+          `identifier` : str
+            [required] The identifier of the person to udpate
+            (typically their CRSid).
+
+          `attr` : :any:`IbisAttribute`
+            [required] The new attribute to add.
+
+          `position` : int
+            [optional] The position of the new attribute in the
+            list of attributes of the same attribute scheme (1, 2, 3,...). A value
+            of 0 (the default) will cause the new attribute to be added to the end
+            of the list of existing attributes for the scheme.
+
+          `allowDuplicates` : bool
+            [optional] If true, the new attribute will
+            always be added, even if another identical attribute already exists.
+            If false (the default), the new attribute will only be added if it
+            doesn't already exist.
+
+          `commitComment` : str
+            [recommended] A short textual description of
+            the change made (will be visible on the history tab in the web
+            application).
+
+        **Returns**
+          :any:`IbisAttribute`
+            The newly created or existing attribute.
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/add-attribute"
         path_params = {"scheme": scheme,
@@ -1369,19 +1672,28 @@ class PersonMethods:
         returned attributes are sorted by attribute scheme precedence and
         then attribute precedence.
 
-        [ HTTP: GET /api/v1/person/{scheme}/{identifier}/get-attributes?attrs=... ]
+        ``[ HTTP: GET /api/v1/person/{scheme}/{identifier}/get-attributes?attrs=... ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person (typically
-        their CRSid).
-        @param attrs [required] The attribute scheme(s) to fetch. This may
-        include any number of the attributes or pseudo-attributes, but it
-        may not include references or attribute chains (see the documentation
-        for the "fetch" parameter in this class).
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return The requested attributes.
+          `identifier` : str
+            [required] The identifier of the person (typically
+            their CRSid).
+
+          `attrs` : str
+            [required] The attribute scheme(s) to fetch. This may
+            include any number of the attributes or pseudo-attributes, but it
+            may not include references or attribute chains (see the documentation
+            for the `fetch` parameter in this class).
+
+        **Returns**
+          list of :any:`IbisAttribute`
+            The requested attributes.
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/get-attributes"
         path_params = {"scheme": scheme,
@@ -1408,22 +1720,32 @@ class PersonMethods:
         permission to see.
 
         By default, only a few basic details about each group are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references of each group.
 
-        NOTE: This method will not include cancelled groups.
+        .. note::
+          This method will not include cancelled groups.
 
-        [ HTTP: GET /api/v1/person/{scheme}/{identifier}/groups ]
+        ``[ HTTP: GET /api/v1/person/{scheme}/{identifier}/groups ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person (typically
-        their CRSid).
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return The person's groups (in groupid order).
+          `identifier` : str
+            [required] The identifier of the person (typically
+            their CRSid).
+
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisGroup`
+            The person's groups (in groupid order).
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/groups"
         path_params = {"scheme": scheme,
@@ -1445,22 +1767,32 @@ class PersonMethods:
         returned list of institutions is sorted by name.
 
         By default, only a few basic details about each institution are
-        returned, but the optional fetch parameter may be used
+        returned, but the optional `fetch` parameter may be used
         to fetch additional attributes or references of each institution.
 
-        NOTE: This method will not include cancelled institutions.
+        .. note::
+          This method will not include cancelled institutions.
 
-        [ HTTP: GET /api/v1/person/{scheme}/{identifier}/insts ]
+        ``[ HTTP: GET /api/v1/person/{scheme}/{identifier}/insts ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person (typically
-        their CRSid).
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return The person's institutions (in name order).
+          `identifier` : str
+            [required] The identifier of the person (typically
+            their CRSid).
+
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisInstitution`
+            The person's institutions (in name order).
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/insts"
         path_params = {"scheme": scheme,
@@ -1480,19 +1812,29 @@ class PersonMethods:
         """
         Test if the specified person is a member of the specified group.
 
-        NOTE: This may be used with cancelled people and groups.
+        .. note::
+          This may be used with cancelled people and groups.
 
-        [ HTTP: GET /api/v1/person/{scheme}/{identifier}/is-member-of-group/{groupid} ]
+        ``[ HTTP: GET /api/v1/person/{scheme}/{identifier}/is-member-of-group/{groupid} ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person (typically
-        their CRSid).
-        @param groupid [required] The ID or name of the group.
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return true if the specified person is in the specified group,
-        false otherwise (or if the person or group does not exist).
+          `identifier` : str
+            [required] The identifier of the person (typically
+            their CRSid).
+
+          `groupid` : str
+            [required] The ID or name of the group.
+
+        **Returns**
+          bool
+            true if the specified person is in the specified group,
+            false otherwise (or if the person or group does not exist).
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/is-member-of-group/%(groupid)s"
         path_params = {"scheme": scheme,
@@ -1513,20 +1855,30 @@ class PersonMethods:
         """
         Test if the specified person is a member of the specified institution.
 
-        NOTE: This may be used with cancelled people and institutions, but
-        it will not include cancelled membership groups.
+        .. note::
+          This may be used with cancelled people and institutions, but
+          it will not include cancelled membership groups.
 
-        [ HTTP: GET /api/v1/person/{scheme}/{identifier}/is-member-of-inst/{instid} ]
+        ``[ HTTP: GET /api/v1/person/{scheme}/{identifier}/is-member-of-inst/{instid} ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person (typically
-        their CRSid).
-        @param instid [required] The ID of the institution.
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return true if the specified person is in the specified institution,
-        false otherwise (or if the person or institution does not exist).
+          `identifier` : str
+            [required] The identifier of the person (typically
+            their CRSid).
+
+          `instid` : str
+            [required] The ID of the institution.
+
+        **Returns**
+          bool
+            true if the specified person is in the specified institution,
+            false otherwise (or if the person or institution does not exist).
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/is-member-of-inst/%(instid)s"
         path_params = {"scheme": scheme,
@@ -1553,22 +1905,32 @@ class PersonMethods:
         see the applicable manager group memberships.
 
         By default, only a few basic details about each group are returned,
-        but the optional fetch parameter may be used to fetch
+        but the optional `fetch` parameter may be used to fetch
         additional attributes or references of each group.
 
-        NOTE: This method will not include cancelled groups.
+        .. note::
+          This method will not include cancelled groups.
 
-        [ HTTP: GET /api/v1/person/{scheme}/{identifier}/manages-groups ]
+        ``[ HTTP: GET /api/v1/person/{scheme}/{identifier}/manages-groups ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person (typically
-        their CRSid).
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return The groups that the person manages (in groupid order).
+          `identifier` : str
+            [required] The identifier of the person (typically
+            their CRSid).
+
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisGroup`
+            The groups that the person manages (in groupid order).
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/manages-groups"
         path_params = {"scheme": scheme,
@@ -1594,22 +1956,32 @@ class PersonMethods:
         to see the applicable editor group memberships.
 
         By default, only a few basic details about each institution are
-        returned, but the optional fetch parameter may be used
+        returned, but the optional `fetch` parameter may be used
         to fetch additional attributes or references of each institution.
 
-        NOTE: This method will not include cancelled institutions.
+        .. note::
+          This method will not include cancelled institutions.
 
-        [ HTTP: GET /api/v1/person/{scheme}/{identifier}/manages-insts ]
+        ``[ HTTP: GET /api/v1/person/{scheme}/{identifier}/manages-insts ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person (typically
-        their CRSid).
-        @param fetch [optional] A comma-separated list of any additional
-        attributes or references to fetch.
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return The institutions that the person manages (in name order).
+          `identifier` : str
+            [required] The identifier of the person (typically
+            their CRSid).
+
+          `fetch` : str
+            [optional] A comma-separated list of any additional
+            attributes or references to fetch.
+
+        **Returns**
+          list of :any:`IbisInstitution`
+            The institutions that the person manages (in name order).
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/manages-insts"
         path_params = {"scheme": scheme,
@@ -1622,6 +1994,57 @@ class PersonMethods:
             raise IbisException(result.error)
         return result.institutions
 
+    def deleteAttribute(self,
+                        scheme,
+                        identifier,
+                        attrid,
+                        commitComment=None):
+        """
+        Delete an attribute of a person. It is not an error if the attribute
+        does not exist.
+
+        Note that in this method, the `commitComment` is passed
+        as a query parameter, rather than as a form parameter, for greater
+        client compatibility.
+
+        ``[ HTTP: DELETE /api/v1/person/{scheme}/{identifier}/{attrid} ]``
+
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
+
+          `identifier` : str
+            [required] The identifier of the person to udpate
+            (typically their CRSid).
+
+          `attrid` : long
+            [required] The ID of the attribute to delete.
+
+          `commitComment` : str
+            [recommended] A short textual description of
+            the change made (will be visible on the history tab in the web
+            application).
+
+        **Returns**
+          bool
+            True if the attribute was deleted by this method, or false
+            if it did not exist.
+        """
+        path = "api/v1/person/%(scheme)s/%(identifier)s/%(attrid)s"
+        path_params = {"scheme": scheme,
+                       "identifier": identifier,
+                       "attrid": attrid}
+        query_params = {"commitComment": commitComment}
+        form_params = {}
+        result = self.conn.invoke_method("DELETE", path, path_params,
+                                         query_params, form_params)
+        if result.error:
+            raise IbisException(result.error)
+        return result.value and result.value.lower() == "true"
+
     def getAttribute(self,
                      scheme,
                      identifier,
@@ -1629,16 +2052,25 @@ class PersonMethods:
         """
         Get a specific attribute of a person.
 
-        [ HTTP: GET /api/v1/person/{scheme}/{identifier}/{attrid} ]
+        ``[ HTTP: GET /api/v1/person/{scheme}/{identifier}/{attrid} ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person (typically
-        their CRSid).
-        @param attrid [required] The ID of the attribute to fetch.
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return The requested attribute.
+          `identifier` : str
+            [required] The identifier of the person (typically
+            their CRSid).
+
+          `attrid` : long
+            [required] The ID of the attribute to fetch.
+
+        **Returns**
+          :any:`IbisAttribute`
+            The requested attribute.
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/%(attrid)s"
         path_params = {"scheme": scheme,
@@ -1666,24 +2098,37 @@ class PersonMethods:
         will be left unchanged.
 
         To avoid inadvertently changing fields of the attribute, it is
-        recommended that {@link #getAttribute getAttribute()} be used to
+        recommended that :any:`getAttribute() <PersonMethods.getAttribute>` be used to
         retrieve the current value of the attribute, before calling this
         method with the required changes.
 
-        [ HTTP: PUT /api/v1/person/{scheme}/{identifier}/{attrid} ]
+        ``[ HTTP: PUT /api/v1/person/{scheme}/{identifier}/{attrid} ]``
 
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person to udpate
-        (typically their CRSid).
-        @param attrid [required] The ID of the attribute to update.
-        @param attr [required] The new attribute values to apply.
-        @param commitComment [recommended] A short textual description of
-        the change made (will be visible on the history tab in the web
-        application).
+        **Parameters**
+          `scheme` : str
+            [required] The person identifier scheme. Typically this
+            should be ``"crsid"``, but other identifier schemes may be
+            available in the future, such as ``"usn"`` or
+            ``"staffNumber"``.
 
-        @return The updated attribute.
+          `identifier` : str
+            [required] The identifier of the person to udpate
+            (typically their CRSid).
+
+          `attrid` : long
+            [required] The ID of the attribute to update.
+
+          `attr` : :any:`IbisAttribute`
+            [required] The new attribute values to apply.
+
+          `commitComment` : str
+            [recommended] A short textual description of
+            the change made (will be visible on the history tab in the web
+            application).
+
+        **Returns**
+          :any:`IbisAttribute`
+            The updated attribute.
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/%(attrid)s"
         path_params = {"scheme": scheme,
@@ -1697,43 +2142,3 @@ class PersonMethods:
         if result.error:
             raise IbisException(result.error)
         return result.attribute
-
-    def deleteAttribute(self,
-                        scheme,
-                        identifier,
-                        attrid,
-                        commitComment=None):
-        """
-        Delete an attribute of a person. It is not an error if the attribute
-        does not exist.
-
-        Note that in this method, the commitComment is passed
-        as a query parameter, rather than as a form parameter, for greater
-        client compatibility.
-
-        [ HTTP: DELETE /api/v1/person/{scheme}/{identifier}/{attrid} ]
-
-        @param scheme [required] The person identifier scheme. Typically this
-        should be "crsid", but other identifier schemes may be available
-        in the future, such as "usn" or "staffNumber".
-        @param identifier [required] The identifier of the person to udpate
-        (typically their CRSid).
-        @param attrid [required] The ID of the attribute to delete.
-        @param commitComment [recommended] A short textual description of
-        the change made (will be visible on the history tab in the web
-        application).
-
-        @return True if the attribute was deleted by this method, or false
-        if it did not exist.
-        """
-        path = "api/v1/person/%(scheme)s/%(identifier)s/%(attrid)s"
-        path_params = {"scheme": scheme,
-                       "identifier": identifier,
-                       "attrid": attrid}
-        query_params = {"commitComment": commitComment}
-        form_params = {}
-        result = self.conn.invoke_method("DELETE", path, path_params,
-                                         query_params, form_params)
-        if result.error:
-            raise IbisException(result.error)
-        return result.value and result.value.lower() == "true"
