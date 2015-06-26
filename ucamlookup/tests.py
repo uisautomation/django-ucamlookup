@@ -15,7 +15,7 @@ class UcamLookupTests(TestCase):
         user1 = User.objects.create_user(username="amc203")
         user2 = User.objects.get(username="amc203")
         self.assertEqual(user1.id, user2.id)
-        self.assertEqual(user2.last_name, "Dr Abraham Martin-Campillo")
+        self.assertEqual(user2.last_name, "Dr Abraham Martin Campillo")
 
         with self.assertRaises(LookupGroup.DoesNotExist):
             LookupGroup.objects.get(lookup_id="101888")
@@ -36,16 +36,16 @@ class UcamLookupTests(TestCase):
         results = get_users_from_query("amc203")
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0]['crsid'], "amc203")
-        self.assertEqual(results[0]['visibleName'], "Dr Abraham Martin-Campillo")
+        self.assertEqual(results[0]['visibleName'], "Dr Abraham Martin Campillo")
 
-        results = get_users_from_query("Martin-Campillo")
+        results = get_users_from_query("Martin Campillo")
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0]['crsid'], "amc203")
-        self.assertEqual(results[0]['visibleName'], "Dr Abraham Martin-Campillo")
+        self.assertEqual(results[0]['visibleName'], "Dr Abraham Martin Campillo")
 
     def test_return_visibleName_by_crsid(self):
         result = return_visibleName_by_crsid("amc203")
-        self.assertEqual(result, "Dr Abraham Martin-Campillo")
+        self.assertEqual(result, "Dr Abraham Martin Campillo")
         result = return_visibleName_by_crsid("amc20311")
         self.assertEqual(result, '')
 
@@ -105,7 +105,7 @@ class UcamLookupTests(TestCase):
         self.assertTrue(self.client.login(username='amc203', password="test"))
         response = self.client.get(reverse('ucamlookup_find_people'), {'query': 'amc203', 'searchId_u': '1'})
         self.assertEqual(response.content,
-                         '{"persons": [{"visibleName": "Dr Abraham Martin-Campillo", "crsid": "amc203"}], '
+                         '{"persons": [{"visibleName": "Dr Abraham Martin Campillo", "crsid": "amc203"}], '
                          '"searchId_u": "1"}')
 
     def test_findgroups_view(self):
