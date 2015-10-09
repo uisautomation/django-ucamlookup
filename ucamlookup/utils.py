@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 import re
 from ibisclient import *
+from ucamlookup import LookupGroup
 
 conn = createConnection()
 
@@ -48,6 +49,28 @@ def get_group_ids_of_a_user_in_lookup(user):
 
     group_list = PersonMethods(conn).getGroups(scheme="crsid", identifier=user.username)
     return map(lambda group: group.groupid, group_list)
+
+
+def get_or_create_group_by_groupid(groupid):
+    """ Returns the django LookupGroup object corresponding to the groupid parameter.
+        :param crsid: the groupid of the retrieved group
+    """
+    groupidstr = str(groupid)
+    group = LookupGroup.objects.filter(lookup_id=groupidstr)
+    if group.exists():
+        group = group.first()
+    else:
+        group = LookupGroup.objects.create(lookup_id=groupidstr)
+    return group
+
+
+def get_user_lookupgroup(user):
+    """ Returns the list of lookup groups of a user
+    :param user: the User
+    :return: the list of LookupGroups
+    """
+    group_list = PersonMethods(conn).getGroups(scheme="crsid", identifier=user.username)
+    return map(lambda group: get_or_create_group_by_groupid(group.groupid), group_list)
 
 
 def get_institutions(user=None):
