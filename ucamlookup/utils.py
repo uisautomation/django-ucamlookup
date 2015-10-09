@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 import re
 from ibisclient import *
+from ucamlookup import LookupGroup
 
 conn = createConnection()
 
@@ -11,8 +12,7 @@ def get_users_from_query(search_string):
         :param search_string: the search string
     """
     persons = PersonMethods(conn).search(query=search_string)
-
-    return map((lambda person: {'crsid': person.identifier.value, 'visibleName': person.visibleName}),
+    return map((lambda person: {'id': person.identifier.value, 'visibleName': person.visibleName}),
                persons)
 
 
@@ -25,9 +25,8 @@ def get_groups_from_query(search_string):
     """ Returns the list of groups based on the search string using the lookup ucam service
         :param search_string: the search string
     """
-    groups = GroupMethods(conn).search(query=search_string)
-
-    return map((lambda group: {'groupid': group.groupid, 'title': group.title}),
+    groups = GroupMethods(conn ).search(query=search_string)
+    return map((lambda group: {'id': group.groupid, 'title': group.title}),
                groups)
 
 
@@ -59,7 +58,6 @@ def get_institutions(user=None):
     all_institutions = InstitutionMethods(conn).allInsts(includeCancelled=False)
     # filter all the institutions that were created for store year students
     all_institutions = filter(lambda institution: re.match(r'.*\d{2}$', institution.id) is None, all_institutions)
-
     if user is not None:
         try:
             all_institutions = PersonMethods(conn).getInsts("crsid", user.username) + all_institutions
@@ -75,7 +73,6 @@ def get_institution_name_by_id(institution_id, all_institutions=None):
     else:
         institution = InstitutionMethods(conn).getInst(instid=institution_id)
         instname = institution.name if institution is not None else None
-
     return instname if instname is not None else 'This institution no longer exists in the database'
 
 
@@ -85,7 +82,6 @@ def user_in_groups(user, lookup_groups):
     :param lookup_groups: the list of LookupGroups
     :return: True if the user belongs to any of the groups or False otherwise
     """
-
     user_group_list = get_group_ids_of_a_user_in_lookup(user)
     groups = filter(lambda group: group.lookup_id in user_group_list, lookup_groups)
     if len(groups) > 0:
@@ -98,39 +94,52 @@ def get_or_create_user_by_crsid(crsid):
     """ Returns the django user corresponding to the crsid parameter.
         :param crsid: the crsid of the retrieved user
     """
-
     user = User.objects.filter(username=crsid)
     if user.exists():
         user = user.first()
     else:
         user = User.objects.create_user(username=crsid)
-
     return user
+
+
+def validate_crsid(crsid_text):
+    """ Validates a text input with a crsid and returns the corresponding user to that crsid
+        :param crsid_text: the crsid of the user in string format
+        :return: The user corresponding to the crsid
+    """
+    crsid_re = re.compile(r'^[a-z][a-z0-9]{3,7}$')
+    if crsid_re.match(crsid_text):
+        return get_or_create_user_by_crsid(crsid_text)
+    else:
+        raise ValidationError("The list of users contains an invalid user")
 
 
 def validate_crsids(crsids_text):
     """ Validates the list of authorsied users from input
-        :param crsids_text: list of crsids from the form
+        :param crsids_text: list of crsids from the form in text format
         :return: The list of users
     """
-
     users = ()
-
     if crsids_text is None:
         return users
-
     crsids = crsids_text.split(',')
-
     if len(crsids) == 1 and crsids[0] == '':
         return users
-
-    crsid_re = re.compile(r'^[a-z][a-z0-9]{3,7}$')
     for crsid in crsids:
-        if crsid_re.match(crsid):
-            users += (get_or_create_user_by_crsid(crsid),)
-        else:
-            raise ValidationError("The list of users contains an invalid user")
+        users += (validate_crsid(crsid), )
+    return users
 
+
+def validate_crsids_list(crsids_list):
+    """ Validates the list of authorsied users from input
+        :param crsids_text: list of crsids in text format
+        :return: The list of users
+    """
+    users = []
+    if crsids_list is None or len(crsids_list) == 0 or crsids_list == [""]:
+        return users
+    for crsid in crsids_list:
+        users += [validate_crsid(crsid)]
     return users
 
 
@@ -139,6 +148,59 @@ def get_users_of_a_group(group):
     :param group: The LookupGroup
     :return: the list of Users
     """
+    return map(lambda user: get_or_create_user_by_crsid(user.identifier.value ),
+               GroupMethods(conn).getMembers(groupid=group.lookup_id))
 
-    return map(lambda user: get_or_create_user_by_crsid(user.identifier ),
-               GroupMethods(conn).getMembers(groupid=group.groupid))
+
+def get_or_create_group_by_groupid(groupid):
+    """ Returns the django group corresponding to the groupid parameter.
+        :param groupid: the groupid of the retrieved group
+    """
+    groupidstr = str(groupid)
+    group = LookupGroup.objects.filter(lookup_id=groupidstr)
+    if group.exists():
+        group = group.first()
+    else:
+        group = LookupGroup.objects.create(lookup_id=groupidstr)
+    return group
+
+
+def validate_groupid(groupid_text):
+    """ Validates the groupid in text format and return the instantiated corresponding group
+        :param groupid_text: the groupid of the retrieved group
+        :return the instantited group corresponding to the id in the input
+    """
+    groupid_re = re.compile(r'^[0-9]{1,6}$')
+    if groupid_re.match(groupid_text):
+        return get_or_create_group_by_groupid(int(groupid_text))
+    else:
+        raise ValidationError("The list of groups contains an invalid group")
+
+
+def validate_groupids(groupids_text):
+    """ Validates the list of group ids from input and returns a list of groups
+        :param groupids_text: list of groupids from the form
+        :return the list of groups corresponding to the group ids of the input
+    """
+    groups = ()
+    if groupids_text is None:
+        return groups
+    groupids = groupids_text.split(',')
+    if len(groupids) == 1 and groupids[0] == '':
+        return groups
+    for groupid in groupids:
+        groups += (validate_groupid(groupid),)
+    return groups
+
+
+def validate_groupids_list(groupids_list):
+    """ Validates the list of group ids from input and returns a list of groups
+        :param groupids_list: list of groupids from the form
+        :return the list of groups corresponding to the group ids of the input
+    """
+    groups = []
+    if groupids_list is None or len(groupids_list) == 0 or groupids_list == [""]:
+        return groups
+    for group in groupids_list:
+        groups += [validate_groupid(group)]
+    return groups

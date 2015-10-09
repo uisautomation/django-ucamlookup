@@ -4,8 +4,8 @@ python:
   - 3.3
   - 3.4
 env:
-  - DJANGO=django==1.6.5
-  - DJANGO=https://www.djangoproject.com/download/1.7c2/tarball/
+  - DJANGO="django>=1.7,<1.8"
+  - DJANGO="django>=1.8,<1.9"
 install:
   - pip install $DJANGO
   - pip install requests

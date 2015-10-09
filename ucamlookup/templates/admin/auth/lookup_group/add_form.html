@@ -5,13 +5,13 @@
 
 {% block extrastyle %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'select2-3.4.8/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'select2-4.0.0/select2.min.css' %}">
 {% endblock %}
 
 {% block extrahead %}
     {{ block.super }}
     <script src="{% static 'jquery-1.11.1.min.js' %}"></script>
-    <script src="{% static 'select2-3.4.8/select2.min.js' %}"></script>
+    <script src="{% static 'select2-4.0.0/select2.full.min.js' %}"></script>
 {% endblock %}
 
 {% block form_top %}
@@ -35,23 +35,29 @@
             ajax: {
                 url: "{%  url 'ucamlookup_find_groups' %}",
                 dataType: 'json',
-                data: function (term, page) {
+                data: function (params) {
                     return {
-                        query: term,
+                        query: params.term,
                         searchId_g: ++searchId_g
                     };
                 },
-                results: function (data, page) {
+                processResults: function (data, page) {
                     if (data.searchId_g != searchId_g)
                         return;
                     return {results: data.groups};
                 }
             },
-            formatResult: function(group) {
-                return group.title;
+            templateResult: function(data) {
+                if (data.loading) {
+                    return data.text;
+                 }
+                return data.title;
             },
-            formatSelection: function(group) {
-                return group.title;
+            templateSelection: function(data) {
+                if (data.loading) {
+                    return data.text;
+                 }
+                return data.title;
             },
             id: function(group) {
                 return group.groupid;

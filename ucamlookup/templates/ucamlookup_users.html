@@ -13,44 +13,25 @@
             ajax: {
                 url: "{%  url 'ucamlookup_find_people' %}",
                 dataType: 'json',
-                data: function (term, page) {
+                data: function (params) {
                     return {
-                        query: term,
+                        query: params.term,
                         searchId_u: ++searchId_u
                     };
                 },
-                results: function (data, page) {
-                    if (data.searchId_u != searchId_u)
-                        return;
+                processResults: function (data, page) {
+                    if (data.searchId_u != searchId_u) return;
                     return {results: data.persons};
                 }
             },
-            formatResult: function(person) {
-                return person.visibleName+" ("+person.crsid+") ";
+            templateResult: function(data) {
+                if (data.loading) return data.text;
+                return data.visibleName+" ("+data.id+") ";
             },
-            formatSelection: function(person) {
-                return person.visibleName+" ("+person.crsid+") ";
-            },
-            id: function(person) {
-                return person.crsid;
-            },
-            dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-            escapeMarkup: function (m) { return m; }
-            // we do not want to escape markup since we are displaying html in results
+            templateSelection: function(data) {
+                if (typeof data.visibleName === "undefined") return data.text;
+                return data.visibleName+" ("+data.id+") ";
+            }
         });
-
-        $("#{{ input_tag_id }}").select2("data", [
-            {% if lookup_lists %}
-                {% for authorised_user in lookup_lists|get_item:user_list %}
-                    {
-                        crsid: "{{ authorised_user.username }}",
-                        visibleName: "{{ authorised_user.last_name }}",
-                        {% if request.user.username == authorised_user.username %}
-                            locked: true
-                        {% endif %}
-                    },
-                {% endfor %}
-            {% endif %}
-        ]);
     });
 </script>

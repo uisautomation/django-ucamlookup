@@ -1,6 +1,14 @@
 django-ucamlookup changelog
 =============================
 
+2.0 - 18/09/2015
+------------------
+
+- Updated select2 to 4.0
+- HTML select is now supported. No longer need to parse HTML inputs (README for more info)
+- Dropped support for django 1.6 (no longer supported by django project)
+
+
 1.5 - 25/06/2015
 ------------------
 

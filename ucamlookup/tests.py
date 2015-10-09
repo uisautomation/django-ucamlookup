@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from ucamlookup import user_in_groups, get_users_from_query, return_visibleName_by_crsid, get_groups_from_query, \
     return_title_by_groupid, get_group_ids_of_a_user_in_lookup, get_institutions, get_institution_name_by_id, \
-    LookupGroup, validate_crsids
+    LookupGroup, validate_crsids, validate_groupids_list, validate_groupids, validate_crsids_list, get_users_of_a_group
 
 
 class UcamLookupTests(TestCase):
@@ -31,16 +31,17 @@ class UcamLookupTests(TestCase):
         self.assertTrue(user_in_groups(amc203, [information_systems_group]))
         finance_group = LookupGroup.objects.create(lookup_id="101923")
         self.assertFalse(user_in_groups(amc203, [finance_group]))
+        self.assertTrue(amc203 in get_users_of_a_group(information_systems_group))
 
     def test_get_users_from_query(self):
         results = get_users_from_query("amc203")
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]['crsid'], "amc203")
+        self.assertEqual(results[0]['id'], "amc203")
         self.assertEqual(results[0]['visibleName'], "Dr Abraham Martin Campillo")
 
         results = get_users_from_query("Martin Campillo")
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]['crsid'], "amc203")
+        self.assertEqual(results[0]['id'], "amc203")
         self.assertEqual(results[0]['visibleName'], "Dr Abraham Martin Campillo")
 
     def test_return_visibleName_by_crsid(self):
@@ -52,8 +53,22 @@ class UcamLookupTests(TestCase):
     def test_get_groups_from_query(self):
         results = get_groups_from_query("Information Systems")
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]['groupid'], "101888")
+        self.assertEqual(results[0]['id'], "101888")
         self.assertEqual(results[0]['title'], "CS Information Systems team")
+
+    def test_get_groups_from_groupids(self):
+        results = validate_groupids_list(["101888"])
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].lookup_id, "101888")
+        self.assertEqual(results[0].name, "CS Information Systems team")
+        with self.assertRaises(ValidationError):
+            validate_groupids_list(["abcdefg"])
+
+    def test_get_groups_from_groupids2(self):
+        results = validate_groupids("101888")
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].lookup_id, "101888")
+        self.assertEqual(results[0].name, "CS Information Systems team")
 
     def test_return_title_by_groupid(self):
         result = return_title_by_groupid("101888")
@@ -105,7 +120,7 @@ class UcamLookupTests(TestCase):
         self.assertTrue(self.client.login(username='amc203', password="test"))
         response = self.client.get(reverse('ucamlookup_find_people'), {'query': 'amc203', 'searchId_u': '1'})
         self.assertEqual(response.content,
-                         '{"persons": [{"visibleName": "Dr Abraham Martin Campillo", "crsid": "amc203"}], '
+                         '{"persons": [{"visibleName": "Dr Abraham Martin Campillo", "id": "amc203"}], '
                          '"searchId_u": "1"}')
 
     def test_findgroups_view(self):
@@ -114,7 +129,7 @@ class UcamLookupTests(TestCase):
         response = self.client.get(reverse('ucamlookup_find_groups'), {'query': 'Information Systems',
                                                                        'searchId_g': '1'})
         self.assertEqual(response.content,
-                         '{"groups": [{"groupid": "101888", "title": "CS Information Systems team"}], '
+                         '{"groups": [{"id": "101888", "title": "CS Information Systems team"}], '
                          '"searchId_g": "1"}')
 
     def test_validate_crsids(self):
@@ -126,6 +141,11 @@ class UcamLookupTests(TestCase):
 
         # users exist in the DB
         user_list = validate_crsids(crsid_list)
+        self.assertEqual(user_list[0].username, "amc203")
+        self.assertEqual(user_list[1].username, "jw35")
+
+        crsid_list = ["amc203", "jw35"]
+        user_list = validate_crsids_list(crsid_list)
         self.assertEqual(user_list[0].username, "amc203")
         self.assertEqual(user_list[1].username, "jw35")
 

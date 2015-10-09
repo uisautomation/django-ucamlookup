@@ -1,3 +1,11 @@
+django-ucamlookup (2.0) unstable; urgency=high
+
+  * Updated select2 to 4.0
+  * HTML select is now supported. No longer need to parse HTML inputs (README for more info)
+  * Dropped support for django 1.6 (no longer supported by django project)
+
+ -- Abraham Martin <amc203@cam.ac.uk>  Wed, 18 Sep 2015 10:12:11 +0100
+
 django-ucamlookup (1.5) unstable; urgency=high
 
   * Updated ibisclient to 1.2.5

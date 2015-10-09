@@ -13,41 +13,28 @@
             ajax: {
                 url: "{%  url 'ucamlookup_find_groups' %}",
                 dataType: 'json',
-                data: function (term, page) {
+                data: function (params) {
                     return {
-                        query: term,
+                        query: params.term,
                         searchId_g: ++searchId_g
                     };
                 },
-                results: function (data, page) {
-                    if (data.searchId_g != searchId_g)
-                        return;
+                processResults: function (data, page) {
+                    if (data.searchId_g != searchId_g) return;
                     return {results: data.groups};
                 }
             },
-            formatResult: function(group) {
-                return group.title;
+            templateResult: function(data) {
+                if (data.loading) return data.text;
+                return data.name+" ("+data.id+") ";
             },
-            formatSelection: function(group) {
-                return group.title;
+            templateSelection: function(data) {
+                if (typeof data.name === "undefined") return data.text;
+                return data.name+" ("+data.id+") ";
             },
             id: function(group) {
                 return group.groupid;
-            },
-            dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-            escapeMarkup: function (m) { return m; }
-            // we do not want to escape markup since we are displaying html in results
+            }
         });
-
-        $("#{{ input_tag_id }}").select2("data", [
-            {% if lookup_lists %}
-                {% for authorised_group in lookup_lists|get_item:group_list %}
-                    {
-                        groupid: "{{ authorised_group.lookup_id }}",
-                        title: "{{ authorised_group.name }}"
-                    },
-                {% endfor %}
-            {% endif %}
-        ]);
     });
 </script>

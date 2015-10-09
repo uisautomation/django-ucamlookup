@@ -5,13 +5,13 @@
 
 {% block extrastyle %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'select2-3.4.8/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'select2-4.0.0/select2.min.css' %}">
 {% endblock %}
 
 {% block extrahead %}
     {{ block.super }}
     <script src="{% static 'jquery-1.11.1.min.js' %}"></script>
-    <script src="{% static 'select2-3.4.8/select2.min.js' %}"></script>
+    <script src="{% static 'select2-4.0.0/select2.full.min.js' %}"></script>
 {% endblock %}
 
 {% block form_top %}
@@ -34,30 +34,27 @@
             ajax: {
                 url: "{%  url 'ucamlookup_find_people' %}",
                 dataType: 'json',
-                data: function (term, page) {
+                data: function (params) {
                     return {
-                        query: term,
+                        query: params.term,
                         searchId_u: ++searchId_u
                     };
                 },
-                results: function (data, page) {
+                processResults: function (data, page) {
                     if (data.searchId_u != searchId_u)
                         return;
                     return {results: data.persons};
                 }
             },
-            formatResult: function(person) {
-                return person.visibleName+" ("+person.crsid+") ";
+            templateResult: function(data) {
+                if (data.loading) return data.text;
+                return data.visibleName+" ("+data.id+") ";
             },
-            formatSelection: function(person) {
-                return person.visibleName+" ("+person.crsid+") ";
-            },
-            id: function(person) {
-                return person.crsid;
+            templateSelection: function(data) {
+                if (typeof data.visibleName === "undefined") return data.text;
+                return data.visibleName+" ("+data.id+") ";
             },
             dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-            escapeMarkup: function (m) { return m; },
-            // we do not want to escape markup since we are displaying html in results
             width: '50%'
         });
     });
