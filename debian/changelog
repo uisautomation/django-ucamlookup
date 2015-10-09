@@ -1,3 +1,9 @@
+django-ucamlookup (1.6.1) unstable; urgency=high
+
+  * Return empty LookupGroup list if IbisException
+
+ -- Abraham Martin <amc203@cam.ac.uk>  Fri, 9 Oct 2015 11:58:39 +0100
+
 django-ucamlookup (1.6) unstable; urgency=high
 
   * Dropped support for django 1.6 (no longer supported by django project)

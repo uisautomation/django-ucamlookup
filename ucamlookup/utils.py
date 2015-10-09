@@ -46,9 +46,11 @@ def get_group_ids_of_a_user_in_lookup(user):
     :param user: the user
     :return: the list of group_ids
     """
-
-    group_list = PersonMethods(conn).getGroups(scheme="crsid", identifier=user.username)
-    return map(lambda group: group.groupid, group_list)
+    try:
+        group_list = PersonMethods(conn).getGroups(scheme="crsid", identifier=user.username)
+        return map(lambda group: group.groupid, group_list)
+    except IbisException:
+        return []
 
 
 def get_or_create_group_by_groupid(groupid):
@@ -69,8 +71,11 @@ def get_user_lookupgroups(user):
     :param user: the User
     :return: the list of LookupGroups
     """
-    group_list = PersonMethods(conn).getGroups(scheme="crsid", identifier=user.username)
-    return map(lambda group: get_or_create_group_by_groupid(group.groupid), group_list)
+    try:
+        group_list = PersonMethods(conn).getGroups(scheme="crsid", identifier=user.username)
+        return map(lambda group: get_or_create_group_by_groupid(group.groupid), group_list)
+    except IbisException:
+        return []
 
 
 def get_institutions(user=None):

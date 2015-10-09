@@ -1,6 +1,12 @@
 django-ucamlookup changelog
 =============================
 
+1.6.1 - 09/10/2015
+------------------
+
+- Return empty LookupGroup list if IbisException
+
+
 1.6 - 09/10/2015
 ------------------
 
