@@ -64,7 +64,7 @@ def get_or_create_group_by_groupid(groupid):
     return group
 
 
-def get_user_lookupgroup(user):
+def get_user_lookupgroups(user):
     """ Returns the list of lookup groups of a user
     :param user: the User
     :return: the list of LookupGroups

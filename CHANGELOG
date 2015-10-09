@@ -1,6 +1,13 @@
 django-ucamlookup changelog
 =============================
 
+1.6 - 09/10/2015
+------------------
+
+- Dropped support for django 1.6 (no longer supported by django project)
+- Added the option to retrieve the LookupGroup object using get_user_lookupgroups
+
+
 1.5 - 25/06/2015
 ------------------
 

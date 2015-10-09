@@ -31,16 +31,9 @@ settings.configure(
 
 logging.basicConfig()
 
-if django.get_version().startswith('1.7'):
-    django.setup()
-    from django.test.runner import DiscoverRunner
-    test_runner = DiscoverRunner()
-elif django.get_version().startswith('1.6'):
-    from django.test.runner import DiscoverRunner
-    test_runner = DiscoverRunner()
-else:
-    from django.test.simple import DjangoTestSuiteRunner
-    test_runner = DjangoTestSuiteRunner(verbosity=1)
+django.setup()
+from django.test.runner import DiscoverRunner
+test_runner = DiscoverRunner()
 
 failures = test_runner.run_tests(['ucamlookup', ])
 if failures:
