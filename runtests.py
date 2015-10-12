@@ -18,8 +18,7 @@ settings.configure(
         'django.contrib.sites',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'ucamlookup',
-        'django_jenkins', ),
+        'ucamlookup', ),
     MIDDLEWARE_CLASSES=(
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
@@ -28,15 +27,6 @@ settings.configure(
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ),
-    JENKINS_TASKS = (
-        'django_jenkins.tasks.run_pylint',
-    #    'django_jenkins.tasks.run_csslint',
-        'django_jenkins.tasks.run_pep8',
-        'django_jenkins.tasks.run_pyflakes',
-        'django_jenkins.tasks.run_sloccount',
-    ),
-    PEP8_RCFILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'jenkins/pep8'),
-    PYLINT_RCFILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'jenkins/pylint'),
 )
 
 logging.basicConfig()
