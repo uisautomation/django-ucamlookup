@@ -7,6 +7,9 @@ settings.configure(
     TIME_ZONE='Europe/London',
     USE_TZ=True,
     ROOT_URLCONF='ucamlookup.urls',
+    PROJECT_APPS = (
+        'ucamlookup',
+    ),
     INSTALLED_APPS=(
         'django.contrib.auth',
         'django.contrib.contenttypes',
