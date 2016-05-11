@@ -169,5 +169,5 @@ def get_users_of_a_group(group):
     :return: the list of Users
     """
 
-    return map(lambda user: get_or_create_user_by_crsid(user.identifier ),
+    return map(lambda user: get_or_create_user_by_crsid(user.identifier),
                GroupMethods(conn).getMembers(groupid=group.groupid))

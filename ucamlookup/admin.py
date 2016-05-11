@@ -61,6 +61,7 @@ class LookupGroupAdmin(admin.ModelAdmin):
     search_fields = ('lookup_id', 'name',)
     ordering = ('lookup_id', 'name',)
     add_form_template = 'admin/auth/lookup_group/add_form.html'
+
     def get_form(self, request, obj=None, **kwargs):
         self.exclude = []
         if not request.resolver_match.view_name == u'admin:ucamlookup_lookupgroup_add':
