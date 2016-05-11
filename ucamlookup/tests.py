@@ -2,9 +2,10 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from ucamlookup import user_in_groups, get_users_from_query, return_visibleName_by_crsid, get_groups_from_query, \
+from .models import LookupGroup
+from .utils import user_in_groups, get_users_from_query, return_visibleName_by_crsid, get_groups_from_query, \
     return_title_by_groupid, get_group_ids_of_a_user_in_lookup, get_institutions, get_institution_name_by_id, \
-    LookupGroup, validate_crsids
+    validate_crsids
 
 
 class UcamLookupTests(TestCase):
@@ -94,11 +95,11 @@ class UcamLookupTests(TestCase):
     def test_views_without_login(self):
         response = self.client.get(reverse('ucamlookup_find_people'), {'query': 'amc203', 'searchId_u': '1'})
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.startswith('http://testserver/accounts/login/'))
+        self.assertTrue(response.url.startswith('/accounts/login/'))
         response = self.client.get(reverse('ucamlookup_find_groups'), {'query': 'Information Systems',
                                                                        'searchId_g': '1'})
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.startswith('http://testserver/accounts/login/'))
+        self.assertTrue(response.url.startswith('/accounts/login/'))
 
     def test_findpeople_view(self):
         User.objects.create_user(username="amc203", password="test")

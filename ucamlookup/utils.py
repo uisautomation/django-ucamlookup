@@ -1,8 +1,9 @@
+import re
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-import re
 from ibisclient import *
-from ucamlookup import LookupGroup
+from ucamlookup.models import LookupGroup
+
 
 conn = createConnection()
 
