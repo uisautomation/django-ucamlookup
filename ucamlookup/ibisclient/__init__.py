@@ -19,6 +19,6 @@
 # Author: Dean Rasheed (dev-group@ucs.cam.ac.uk)
 # --------------------------------------------------------------------------
 
-from connection import *
-from dto import *
-from methods import *
+from .connection import *
+from .dto import *
+from .methods import *

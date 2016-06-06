@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import LookupGroup
+from ucamlookup.models import LookupGroup
 
 
 class UserCreationForm(forms.ModelForm):

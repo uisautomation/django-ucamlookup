@@ -24,20 +24,30 @@ Connection classes to connect to the Lookup/Ibis web service and allow API
 methods to be invoked.
 """
 
+import sys
+if sys.version_info >= (3, 0):
+    PY3 = True
+else:
+    PY3 = False
 import base64
 from datetime import date
-from httplib import HTTPSConnection
+if PY3:
+    from http.client import HTTPSConnection
+else:
+    from httplib import HTTPSConnection
 import socket
 import os
-import urllib
-
-from dto import IbisDto, IbisError, IbisResult, IbisResultParser
+if PY3:
+    import urllib.parse
+else:
+    import urllib
+from .dto import IbisDto, IbisError, IbisResult, IbisResultParser
 
 try:
     import ssl
     _have_ssl = True
 except ImportError:
-    print "WARNING: No SSL support - connection may be insecure"
+    print("WARNING: No SSL support - connection may be insecure")
     _have_ssl = False
 
 _MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -68,8 +78,8 @@ class IbisException(Exception):
 class HTTPSValidatingConnection(HTTPSConnection):
     """
     Class extending the standard :py:class:`HTTPSConnection` class from
-    :any:`httplib`, so that it checks the server's certificates, validating
-    them against the specified CA certificates.
+    :any:`http.client`, so that it checks the server's certificates,
+    validating them against the specified CA certificates.
 
     .. codeauthor:: Dean Rasheed (dev-group@ucs.cam.ac.uk)
     """
@@ -89,7 +99,7 @@ class HTTPSValidatingConnection(HTTPSConnection):
 
         if not _have_ssl:
             # No SSL available - insecure connection
-            print "WARNING: No SSL support - connection may be insecure"
+            print("WARNING: No SSL support - connection may be insecure")
         elif self.ca_certs:
             # Wrap the socket in an SSLSocket, and tell it to validate
             # the server certificates. Note that this does not check that
@@ -158,7 +168,12 @@ class IbisClientConnection:
 
     def _update_authorization(self):
         credentials = "%s:%s" % (self.username, self.password)
-        self.authorization = "Basic %s" % base64.b64encode(credentials)
+        if PY3:
+            credential_bytes = bytes(credentials, "UTF-8")
+            base64_credentials = str(base64.b64encode(credential_bytes), "UTF-8")
+            self.authorization = "Basic %s" % base64_credentials
+        else:
+            self.authorization = "Basic %s" % base64.b64encode(credentials)
 
     def set_username(self, username):
         """
@@ -199,7 +214,11 @@ class IbisClientConnection:
         sending to the server. Any null values will be omitted.
         """
         new_params = {}
-        for key, value in params.iteritems():
+        if PY3:
+            items = params.items()
+        else:
+            items = params.iteritems()
+        for key, value in items:
             if value != None:
                 if isinstance(value, bool):
                     if value: new_params[key] = "true"
@@ -237,13 +256,23 @@ class IbisClientConnection:
 
         Note that all parameter values are automatically URL-encoded.
         """
-        for key, value in path_params.iteritems():
-            path_params[key] = urllib.quote_plus(value)
+        if PY3:
+            for key, value in path_params.items():
+                path_params[key] = urllib.parse.quote_plus(value)
+        else:
+            for key, value in path_params.iteritems():
+                path_params[key] = urllib.quote_plus(value)
         path = path % path_params
 
-        if not query_params.has_key("flatten"):
-            query_params["flatten"] = "true"
-        path += "?%s" % urllib.urlencode(query_params)
+
+        if PY3:
+            if "flatten" not in query_params:
+                query_params["flatten"] = "true"
+            path += "?%s" % urllib.parse.urlencode(query_params)
+        else:
+            if not query_params.has_key("flatten"):
+                query_params["flatten"] = "true"
+            path += "?%s" % urllib.urlencode(query_params)
 
         if path.startswith("/"):
             return "%s%s" % (self.url_base, path[1:])
@@ -292,7 +321,10 @@ class IbisClientConnection:
                    "Authorization": self.authorization}
 
         if form_params:
-            body = urllib.urlencode(form_params)
+            if PY3:
+                body = urllib.parse.urlencode(form_params)
+            else:
+                body = urllib.urlencode(form_params)
             conn.request(method, url, body, headers)
         else:
             conn.request(method, url, headers=headers)

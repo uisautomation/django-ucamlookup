@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from .models import LookupGroup
-from .utils import user_in_groups, get_users_from_query, return_visibleName_by_crsid, get_groups_from_query, \
+from ucamlookup.models import LookupGroup
+from ucamlookup.utils import user_in_groups, get_users_from_query, return_visibleName_by_crsid, get_groups_from_query, \
     return_title_by_groupid, get_group_ids_of_a_user_in_lookup, get_institutions, get_institution_name_by_id, \
     validate_crsids
 

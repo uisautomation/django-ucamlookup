@@ -1,6 +1,7 @@
 import django
 from django.conf.urls import patterns, url
-from views import find_people, find_groups
+from ucamlookup.views import find_people, find_groups
+
 
 if django.VERSION[0] <= 1 and django.VERSION[1] <= 7:
     urlpatterns = patterns(

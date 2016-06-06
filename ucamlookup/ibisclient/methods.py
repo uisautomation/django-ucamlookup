@@ -25,7 +25,7 @@ the Python equivalent of the `XxxMethods` Java classes for executing all API
 methods.
 """
 
-from connection import IbisException
+from .connection import IbisException
 
 class IbisMethods:
     """
@@ -233,11 +233,11 @@ class GroupMethods:
           `approxMatches` : bool
             [optional] Flag to enable more approximate
             matching in the search, causing more results to be returned. Defaults
-            to false.
+            to :any:`False`.
 
           `includeCancelled` : bool
             [optional] Flag to allow cancelled groups to
-            be included. Defaults to false.
+            be included. Defaults to :any:`False`.
 
           `offset` : int
             [optional] The number of results to skip at the start
@@ -293,11 +293,11 @@ class GroupMethods:
           `approxMatches` : bool
             [optional] Flag to enable more approximate
             matching in the search, causing more results to be returned. Defaults
-            to false.
+            to :any:`False`.
 
           `includeCancelled` : bool
             [optional] Flag to allow cancelled groups to
-            be included. Defaults to false.
+            be included. Defaults to :any:`False`.
 
         **Returns**
           int
@@ -343,7 +343,7 @@ class GroupMethods:
 
         **Returns**
           :any:`IbisGroup`
-            The requested group or ``None`` if it was not found.
+            The requested group or :any:`None` if it was not found.
         """
         path = "api/v1/group/%(groupid)s"
         path_params = {"groupid": groupid}
@@ -752,15 +752,15 @@ class InstitutionMethods:
           `approxMatches` : bool
             [optional] Flag to enable more approximate
             matching in the search, causing more results to be returned. Defaults
-            to false.
+            to :any:`False`.
 
           `includeCancelled` : bool
             [optional] Flag to allow cancelled institutions
-            to be included. Defaults to false.
+            to be included. Defaults to :any:`False`.
 
           `attributes` : str
             [optional] A comma-separated list of attributes to
-            consider when searching. If this is ``None`` (the default) then
+            consider when searching. If this is :any:`None` (the default) then
             all attribute schemes marked as searchable will be included.
 
           `offset` : int
@@ -818,15 +818,15 @@ class InstitutionMethods:
           `approxMatches` : bool
             [optional] Flag to enable more approximate
             matching in the search, causing more results to be returned. Defaults
-            to false.
+            to :any:`False`.
 
           `includeCancelled` : bool
             [optional] Flag to allow cancelled institutions
-            to be included. Defaults to false.
+            to be included. Defaults to :any:`False`.
 
           `attributes` : str
             [optional] A comma-separated list of attributes to
-            consider when searching. If this is ``None`` (the default) then
+            consider when searching. If this is :any:`None` (the default) then
             all attribute schemes marked as searchable will be included.
 
         **Returns**
@@ -872,7 +872,7 @@ class InstitutionMethods:
 
         **Returns**
           :any:`IbisInstitution`
-            The requested institution or ``None`` if it was not found.
+            The requested institution or :any:`None` if it was not found.
         """
         path = "api/v1/inst/%(instid)s"
         path_params = {"instid": instid}
@@ -914,10 +914,10 @@ class InstitutionMethods:
             of the list of existing attributes for the scheme.
 
           `allowDuplicates` : bool
-            [optional] If true, the new attribute will
-            always be added, even if another identical attribute already exists.
-            If false (the default), the new attribute will only be added if it
-            doesn't already exist.
+            [optional] If :any:`True`, the new attribute
+            will always be added, even if another identical attribute already
+            exists. If :any:`False` (the default), the new attribute will only be
+            added if it doesn't already exist.
 
           `commitComment` : str
             [recommended] A short textual description of
@@ -1126,8 +1126,8 @@ class InstitutionMethods:
 
         **Returns**
           bool
-            True if the attribute was deleted by this method, or false
-            if it did not exist.
+            :any:`True` if the attribute was deleted by this method, or
+            :any:`False` if it did not exist.
         """
         path = "api/v1/inst/%(instid)s/%(attrid)s"
         path_params = {"instid": instid,
@@ -1420,12 +1420,12 @@ class PersonMethods:
           `approxMatches` : bool
             [optional] Flag to enable more approximate
             matching in the search, causing more results to be returned. Defaults
-            to false.
+            to :any:`False`.
 
           `includeCancelled` : bool
             [optional] Flag to allow cancelled people to
             be included (people who are no longer members of the University).
-            Defaults to false.
+            Defaults to :any:`False`.
 
           `misStatus` : str
             [optional] The type of people to search for. This may
@@ -1444,7 +1444,7 @@ class PersonMethods:
 
           `attributes` : str
             [optional] A comma-separated list of attributes to
-            consider when searching. If this is ``None`` (the default) then
+            consider when searching. If this is :any:`None` (the default) then
             all attribute schemes marked as searchable will be included.
 
           `offset` : int
@@ -1505,12 +1505,12 @@ class PersonMethods:
           `approxMatches` : bool
             [optional] Flag to enable more approximate
             matching in the search, causing more results to be returned. Defaults
-            to false.
+            to :any:`False`.
 
           `includeCancelled` : bool
             [optional] Flag to allow cancelled people to
             be included (people who are no longer members of the University).
-            Defaults to false.
+            Defaults to :any:`False`.
 
           `misStatus` : str
             [optional] The type of people to search for. This may
@@ -1529,7 +1529,7 @@ class PersonMethods:
 
           `attributes` : str
             [optional] A comma-separated list of attributes to
-            consider when searching. If this is ``None`` (the default) then
+            consider when searching. If this is :any:`None` (the default) then
             all attribute schemes marked as searchable will be included.
 
         **Returns**
@@ -1584,7 +1584,7 @@ class PersonMethods:
 
         **Returns**
           :any:`IbisPerson`
-            The requested person or ``None`` if they were not found.
+            The requested person or :any:`None` if they were not found.
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s"
         path_params = {"scheme": scheme,
@@ -1635,10 +1635,10 @@ class PersonMethods:
             of the list of existing attributes for the scheme.
 
           `allowDuplicates` : bool
-            [optional] If true, the new attribute will
-            always be added, even if another identical attribute already exists.
-            If false (the default), the new attribute will only be added if it
-            doesn't already exist.
+            [optional] If :any:`True`, the new attribute
+            will always be added, even if another identical attribute already
+            exists. If :any:`False` (the default), the new attribute will only be
+            added if it doesn't already exist.
 
           `commitComment` : str
             [recommended] A short textual description of
@@ -1833,8 +1833,9 @@ class PersonMethods:
 
         **Returns**
           bool
-            true if the specified person is in the specified group,
-            false otherwise (or if the person or group does not exist).
+            :any:`True` if the specified person is in the specified
+            group, :any:`False` otherwise (or if the person or group does not
+            exist).
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/is-member-of-group/%(groupid)s"
         path_params = {"scheme": scheme,
@@ -1877,8 +1878,9 @@ class PersonMethods:
 
         **Returns**
           bool
-            true if the specified person is in the specified institution,
-            false otherwise (or if the person or institution does not exist).
+            :any:`True` if the specified person is in the specified
+            institution, :any:`False` otherwise (or if the person or institution
+            does not exist).
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/is-member-of-inst/%(instid)s"
         path_params = {"scheme": scheme,
@@ -2030,8 +2032,8 @@ class PersonMethods:
 
         **Returns**
           bool
-            True if the attribute was deleted by this method, or false
-            if it did not exist.
+            :any:`True` if the attribute was deleted by this method, or
+            :any:`False` if it did not exist.
         """
         path = "api/v1/person/%(scheme)s/%(identifier)s/%(attrid)s"
         path_params = {"scheme": scheme,

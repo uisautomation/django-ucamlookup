@@ -1,3 +1,9 @@
+django-ucamlookup (1.7) unstable; urgency=low
+
+  * Added Python 3 support
+
+ -- Abraham Martin <amc203@cam.ac.uk>  Mon, 6 Jun 2016 11:15:12 +0100
+
 django-ucamlookup (1.6.1) unstable; urgency=high
 
   * Return empty LookupGroup list if IbisException

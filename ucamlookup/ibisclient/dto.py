@@ -30,10 +30,14 @@ In the case of an error, an :any:`IbisException` will be raised which will
 contain an instance of an :any:`IbisError` DTO.
 """
 
+import sys
+if sys.version_info >= (3, 0):
+    PY3 = True
+else:
+    PY3 = False
 import base64
 from datetime import date
 from xml.parsers import expat
-
 import sys
 if sys.hexversion < 0x02040000:
     from sets import Set as set
@@ -219,7 +223,7 @@ class IbisPerson(IbisDto):
 
     def is_staff(self):
         """
-        Returns true if the person is a member of staff.
+        Returns :any:`True` if the person is a member of staff.
 
         Note that this tests for an misAffiliation of ``""``, ``"staff"`` or
         ``"staff,student"`` since some members of staff will have a blank
@@ -230,7 +234,7 @@ class IbisPerson(IbisDto):
 
     def is_student(self):
         """
-        Returns true if the person is a student.
+        Returns :any:`True` if the person is a student.
 
         This tests for an misAffiliation of ``"student"`` or
         ``"staff,student"``.
@@ -527,7 +531,7 @@ class IbisGroup(IbisDto):
         "includedByGroups":
             """
             list of :any:`IbisGroup`
-              A list of the groups that direcly include this group. Any
+              A list of the groups that directly include this group. Any
               members of this group will automatically be included in those
               groups (and recursively in any groups that include those
               groups). This will only be populated if the `fetch` parameter
@@ -631,15 +635,18 @@ class IbisIdentifier(IbisDto):
 class IbisAttribute(IbisDto):
     """
     Class representing an attribute of a person or institution returned by
-    the web service API. Note that for institution attributes, the instid,
-    visibility and owningGroupid fields will be null.
+    the web service API. Note that for institution attributes, the
+    :any:`instid <IbisAttribute.instid>`,
+    :any:`visibility <IbisAttribute.visibility>` and
+    :any:`owningGroupid <IbisAttribute.owningGroupid>` fields will be
+    :any:`None`.
 
     .. codeauthor:: Dean Rasheed (dev-group@ucs.cam.ac.uk)
     """
     __slots__ = {
         "attrid":
             """
-            str
+            int
               The unique internal identifier of the attribute.
             """,
         "scheme":
@@ -705,7 +712,7 @@ class IbisAttribute(IbisDto):
         """ Create an IbisAttribute from the attributes of an XML node. """
         IbisDto.__init__(self, attrs)
         if self.attrid != None:
-            self.attrid = long(self.attrid)
+            self.attrid = int(self.attrid)
         if self.effectiveFrom != None:
             self.effectiveFrom = parse_date(self.effectiveFrom)
         if self.effectiveTo != None:
@@ -937,32 +944,32 @@ class IbisContactRow(IbisDto):
         "addresses":
             """
             list of str
-              A list of the contact row's addresses. This will never be None,
-              but it may be an empty list.
+              A list of the contact row's addresses. This will never be
+              :any:`None`, but it may be an empty list.
             """,
         "emails":
             """
             list of str
               A list of the contact row's email addresses. This will never be
-              None, but it may be an empty list.
+              :any:`None`, but it may be an empty list.
             """,
         "people":
             """
             list of :any:`IbisPerson`
               A list of the people referred to by the contact row. This will
-              never by None, but it may be an empty list.
+              never by :any:`None`, but it may be an empty list.
             """,
         "phoneNumbers":
             """
             list of :any:`IbisContactPhoneNumber`
               A list of the contact row's phone numbers. This will never be
-              None, but it may be an empty list.
+              :any:`None`, but it may be an empty list.
             """,
         "webPages":
             """
             list of :any:`IbisContactWebPage`
-              A list of the contact row's web pages. This will never be None,
-              but it may be an empty list.
+              A list of the contact row's web pages. This will never be
+              :any:`None`, but it may be an empty list.
             """,
         "unflattened":
             """
@@ -1165,7 +1172,8 @@ class IbisResult(IbisDto):
               entities returned by the method.
 
               .. note::
-                This will be None unless the "flatten" parameter is true.
+                This will be :any:`None` unless the "flatten" parameter is
+                :any:`True`.
             """
     }
 
@@ -1270,7 +1278,7 @@ class IbisResult(IbisDto):
 
         This is necessary if the IbisResult was constructed from XML/JSON in
         its flattened representation (with the "flatten" parameter set to
-        true).
+        :any:`True`).
 
         On entry, the IbisResult object may have people, institutions or
         groups in it with "ref" fields referring to objects held in the
@@ -1379,8 +1387,12 @@ class IbisResultParser:
                 if element.value != None: element.value += data
                 else: element.value = data
             elif isinstance(element, dict):
-                if element.has_key("data"): element["data"] += data
-                else: element["data"] = data
+                if PY3:
+                    if "data" in element: element["data"] += data
+                    else: element["data"] = data
+                else:
+                    if element.has_key("data"): element["data"] += data
+                    else: element["data"] = data
 
     def parse_xml(self, data):
         """
@@ -1392,7 +1404,7 @@ class IbisResultParser:
 
         **Returns**
           :any:`IbisResult`
-            The parsed results. This may contain a lists or trees of objects
+            The parsed results. This may contain lists or trees of objects
             representing people, institutions and groups returned from the
             server.
         """
@@ -1409,7 +1421,7 @@ class IbisResultParser:
 
         **Returns**
           :any:`IbisResult`
-            The parsed results. This may contain a lists or trees of objects
+            The parsed results. This may contain lists or trees of objects
             representing people, institutions and groups returned from the
             server.
         """

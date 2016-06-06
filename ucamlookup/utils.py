@@ -1,7 +1,7 @@
 import re
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from ibisclient import *
+from ucamlookup.ibisclient import *
 from ucamlookup.models import LookupGroup
 
 

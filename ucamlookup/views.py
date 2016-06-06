@@ -1,7 +1,7 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from utils import get_users_from_query, get_groups_from_query
+from ucamlookup.utils import get_users_from_query, get_groups_from_query
 
 
 @login_required

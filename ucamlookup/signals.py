@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from .models import LookupGroup
-from .utils import return_visibleName_by_crsid, return_title_by_groupid
+from ucamlookup.models import LookupGroup
+from ucamlookup.utils import return_visibleName_by_crsid, return_title_by_groupid
 
 
 @receiver(pre_save, sender=User)
