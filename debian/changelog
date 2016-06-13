@@ -1,3 +1,9 @@
+django-ucamlookup (1.7.1) unstable; urgency=low
+
+  * Import utilities to the root package
+
+ -- Abraham Martin <amc203@cam.ac.uk>  Mon, 13 Jun 2016 9:11:02 +0100
+
 django-ucamlookup (1.7) unstable; urgency=low
 
   * Added Python 3 support

@@ -1,6 +1,12 @@
 django-ucamlookup changelog
 =============================
 
+1.7.1 - 13/06/2016
+------------------
+
+- Import utilities to the root package
+
+
 1.7 - 06/06/2016
 ------------------
 
