@@ -4,6 +4,15 @@ django-ucamlookup changelog
 1.7.1 - 13/06/2016
 ------------------
 
+- Dropped support for django 1.7
+- Added support for django 1.9 and 1.10
+- Dropped support for python 3.3
+- Added support for python 3.5
+
+
+1.7.1 - 13/06/2016
+------------------
+
 - Import utilities to the root package
 
 

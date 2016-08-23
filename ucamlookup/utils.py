@@ -14,8 +14,7 @@ def get_users_from_query(search_string):
     """
     persons = PersonMethods(conn).search(query=search_string)
 
-    return map((lambda person: {'crsid': person.identifier.value, 'visibleName': person.visibleName}),
-               persons)
+    return list(map((lambda person: {'crsid': person.identifier.value, 'visibleName': person.visibleName}), persons))
 
 
 def return_visibleName_by_crsid(crsid):
@@ -29,8 +28,7 @@ def get_groups_from_query(search_string):
     """
     groups = GroupMethods(conn).search(query=search_string)
 
-    return map((lambda group: {'groupid': group.groupid, 'title': group.title}),
-               groups)
+    return list(map((lambda group: {'groupid': group.groupid, 'title': group.title}), groups))
 
 
 def return_title_by_groupid(groupid):
@@ -49,7 +47,7 @@ def get_group_ids_of_a_user_in_lookup(user):
     """
     try:
         group_list = PersonMethods(conn).getGroups(scheme="crsid", identifier=user.username)
-        return map(lambda group: group.groupid, group_list)
+        return list(map(lambda group: group.groupid, group_list))
     except IbisException:
         return []
 
@@ -74,7 +72,7 @@ def get_user_lookupgroups(user):
     """
     try:
         group_list = PersonMethods(conn).getGroups(scheme="crsid", identifier=user.username)
-        return map(lambda group: get_or_create_group_by_groupid(group.groupid), group_list)
+        return list(map(lambda group: get_or_create_group_by_groupid(group.groupid), group_list))
     except IbisException:
         return []
 
@@ -87,7 +85,8 @@ def get_institutions(user=None):
 
     all_institutions = InstitutionMethods(conn).allInsts(includeCancelled=False)
     # filter all the institutions that were created for store year students
-    all_institutions = filter(lambda institution: re.match(r'.*\d{2}$', institution.id) is None, all_institutions)
+    all_institutions = list(filter(lambda institution: re.match(r'.*\d{2}$', institution.id) is None,
+                                   all_institutions))
 
     if user is not None:
         try:
@@ -95,7 +94,7 @@ def get_institutions(user=None):
         except IbisException:
             pass
 
-    return map((lambda institution: (institution.instid, institution.name)), all_institutions)
+    return list(map((lambda institution: (institution.instid, institution.name)), all_institutions))
 
 
 def get_institution_name_by_id(institution_id, all_institutions=None):
@@ -116,7 +115,7 @@ def user_in_groups(user, lookup_groups):
     """
 
     user_group_list = get_group_ids_of_a_user_in_lookup(user)
-    groups = filter(lambda group: group.lookup_id in user_group_list, lookup_groups)
+    groups = list(filter(lambda group: group.lookup_id in user_group_list, lookup_groups))
     if len(groups) > 0:
         return True
     else:
@@ -169,5 +168,5 @@ def get_users_of_a_group(group):
     :return: the list of Users
     """
 
-    return map(lambda user: get_or_create_user_by_crsid(user.identifier),
-               GroupMethods(conn).getMembers(groupid=group.groupid))
+    return list(map(lambda user: get_or_create_user_by_crsid(user.identifier),
+                    GroupMethods(conn).getMembers(groupid=group.groupid)))

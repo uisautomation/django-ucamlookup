@@ -1,3 +1,5 @@
+import json
+import sys
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -39,7 +41,7 @@ class UcamLookupTests(TestCase):
         self.assertEqual(results[0]['crsid'], "amc203")
         self.assertEqual(results[0]['visibleName'], "Dr Abraham Martin Campillo")
 
-        results = get_users_from_query("Martin Campillo")
+        results = get_users_from_query("Abraham Martin Campillo")
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0]['crsid'], "amc203")
         self.assertEqual(results[0]['visibleName'], "Dr Abraham Martin Campillo")
@@ -95,28 +97,42 @@ class UcamLookupTests(TestCase):
     def test_views_without_login(self):
         response = self.client.get(reverse('ucamlookup_find_people'), {'query': 'amc203', 'searchId_u': '1'})
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.startswith('/accounts/login/'))
+        self.assertIn('/accounts/login/', response.url)
         response = self.client.get(reverse('ucamlookup_find_groups'), {'query': 'Information Systems',
                                                                        'searchId_g': '1'})
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.startswith('/accounts/login/'))
+        self.assertIn('/accounts/login/', response.url)
 
     def test_findpeople_view(self):
         User.objects.create_user(username="amc203", password="test")
         self.assertTrue(self.client.login(username='amc203', password="test"))
         response = self.client.get(reverse('ucamlookup_find_people'), {'query': 'amc203', 'searchId_u': '1'})
-        self.assertEqual(response.content,
-                         '{"persons": [{"visibleName": "Dr Abraham Martin Campillo", "crsid": "amc203"}], '
-                         '"searchId_u": "1"}')
+        if sys.version_info >= (3,0):
+            jsonresponse = json.loads(response.content.decode('utf-8'))
+        else:
+            jsonresponse = json.loads(response.content)
+        self.assertIn('persons', jsonresponse)
+        self.assertIn('searchId_u', jsonresponse)
+        self.assertEqual(jsonresponse['searchId_u'], "1")
+        self.assertEqual(len(jsonresponse['persons']), 1)
+        self.assertEqual(jsonresponse['persons'][0]['visibleName'], "Dr Abraham Martin Campillo")
+        self.assertEqual(jsonresponse['persons'][0]['crsid'], "amc203")
 
     def test_findgroups_view(self):
         User.objects.create_user(username="amc203", password="test")
         self.assertTrue(self.client.login(username='amc203', password="test"))
         response = self.client.get(reverse('ucamlookup_find_groups'), {'query': 'Information Systems',
                                                                        'searchId_g': '1'})
-        self.assertEqual(response.content,
-                         '{"groups": [{"groupid": "101888", "title": "CS Information Systems team"}], '
-                         '"searchId_g": "1"}')
+        if sys.version_info >= (3,0):
+            jsonresponse = json.loads(response.content.decode('utf-8'))
+        else:
+            jsonresponse = json.loads(response.content)
+        self.assertIn('groups', jsonresponse)
+        self.assertIn('searchId_g', jsonresponse)
+        self.assertEqual(jsonresponse['searchId_g'], "1")
+        self.assertEqual(len(jsonresponse['groups']), 1)
+        self.assertEqual(jsonresponse['groups'][0]['groupid'], "101888")
+        self.assertEqual(jsonresponse['groups'][0]['title'], "CS Information Systems team")
 
     def test_validate_crsids(self):
         # users do not exist in the DB
