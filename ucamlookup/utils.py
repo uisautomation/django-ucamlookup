@@ -1,8 +1,6 @@
 import re
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from ucamlookup.ibisclient import *
-from ucamlookup.models import LookupGroup
 
 
 conn = createConnection()
@@ -56,6 +54,7 @@ def get_or_create_group_by_groupid(groupid):
     """ Returns the django LookupGroup object corresponding to the groupid parameter.
         :param crsid: the groupid of the retrieved group
     """
+    from ucamlookup.models import LookupGroup
     groupidstr = str(groupid)
     group = LookupGroup.objects.filter(lookup_id=groupidstr)
     if group.exists():
@@ -126,7 +125,7 @@ def get_or_create_user_by_crsid(crsid):
     """ Returns the django user corresponding to the crsid parameter.
         :param crsid: the crsid of the retrieved user
     """
-
+    from django.contrib.auth.models import User
     user = User.objects.filter(username=crsid)
     if user.exists():
         user = user.first()
