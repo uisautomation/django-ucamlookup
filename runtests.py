@@ -8,7 +8,6 @@ from django.test.runner import DiscoverRunner
 
 DIRNAME = os.path.dirname(__file__)
 
-
 settings.configure(
     DEBUG=False,
     DATABASES={'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': 'test.db', }},
@@ -56,9 +55,9 @@ settings.configure(
     ]
 )
 
-logging.basicConfig()
-
 django.setup()
+
+logging.basicConfig()
 test_runner = DiscoverRunner()
 
 failures = test_runner.run_tests(['ucamlookup', ])
