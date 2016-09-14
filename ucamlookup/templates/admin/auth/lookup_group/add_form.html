@@ -47,18 +47,16 @@
                     return {results: data.groups};
                 }
             },
-            formatResult: function(group) {
-                return group.title;
+            formatResult: function(group, container, query, escapeMarkup) {
+                return escapeMarkup(group.title);
             },
-            formatSelection: function(group) {
-                return group.title;
+            formatSelection: function(group, container, escapeMarkup) {
+                return escapeMarkup(group.title);
             },
             id: function(group) {
                 return group.groupid;
             },
             dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-            escapeMarkup: function (m) { return m; },
-            // we do not want to escape markup since we are displaying html in results
             width: '100%'
         });
     });

@@ -25,18 +25,16 @@
                     return {results: data.persons};
                 }
             },
-            formatResult: function(person) {
-                return person.visibleName+" ("+person.crsid+") ";
+            formatResult: function(person, container, wuery, escapeMarkup) {
+                return escapeMarkup(person.visibleName+" ("+person.crsid+") ");
             },
-            formatSelection: function(person) {
-                return person.visibleName+" ("+person.crsid+") ";
+            formatSelection: function(person, container, escapeMarkup) {
+                return escapeMarkup(person.visibleName+" ("+person.crsid+") ");
             },
             id: function(person) {
                 return person.crsid;
             },
             dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-            escapeMarkup: function (m) { return m; }
-            // we do not want to escape markup since we are displaying html in results
         });
 
         $("#{{ input_tag_id }}").select2("data", [
