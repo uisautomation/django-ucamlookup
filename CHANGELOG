@@ -1,6 +1,11 @@
 django-ucamlookup changelog
 =============================
 
+1.9 - 15/09/2016
+----------------
+
+- Fix XXS vulnerability in template macros
+
 1.8 - 23/08/2016
 ------------------
 

@@ -1,3 +1,9 @@
+django-ucamlookup (1.9) unstable; urgency=medium
+
+  * Fix XSS vulnerability on template macros
+
+ -- Jon Warbrick <jw35@cam.ac.uk>  Thu, 15 Sep 2016 11:11:08 +0100
+
 django-ucamlookup (1.7.1) unstable; urgency=low
 
   * Import utilities to the root package
