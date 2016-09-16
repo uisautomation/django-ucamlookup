@@ -1,3 +1,9 @@
+django-ucamlookup (1.9.1) jessie; urgency=medium
+
+  * Retarget build at jessie.
+
+ -- Jon Warbrick <jw35@cam.ac.uk>  Thu, 15 Sep 2016 14:53:33 +0100
+
 django-ucamlookup (1.9) unstable; urgency=medium
 
   * Fix XSS vulnerability on template macros
