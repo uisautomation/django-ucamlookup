@@ -1,6 +1,11 @@
 django-ucamlookup changelog
 =============================
 
+1.9.1 - 13/01/2017
+------------------
+
+- bugfix: placeholder now displays correctly for dropdown lookup
+
 1.9 - 15/09/2016
 ----------------
 
