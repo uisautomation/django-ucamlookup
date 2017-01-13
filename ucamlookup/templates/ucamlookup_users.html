@@ -29,7 +29,11 @@
                 return escapeMarkup(person.visibleName+" ("+person.crsid+") ");
             },
             formatSelection: function(person, container, escapeMarkup) {
-                return escapeMarkup(person.visibleName+" ("+person.crsid+") ");
+
+                if (person && person.crsid) {
+                    return escapeMarkup(person.visibleName+" ("+person.crsid+") ");
+                }
+                return this.placeholder;
             },
             id: function(person) {
                 return person.crsid;
