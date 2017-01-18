@@ -7,7 +7,7 @@
 
     $(document).ready(function() {
         $("#{{ input_tag_id }}").select2({
-            placeholder: "Search for user",
+            placeholder: '{{ placeholder|default:"Search for user" }}',
             minimumInputLength: 3,
             multiple: {{ multiple }},
             ajax: {

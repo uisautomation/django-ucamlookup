@@ -73,8 +73,10 @@ and if you want to let the user select one or more users with the parameter *mul
     {% include 'ucamlookup_users.html' with input_tag_id="lookup_users" multiple=true user_list="authors" %}
 ```
 
+You can optionally override the placeholder text.
+
 If you want to show existing records in the input tag you will need to pass to the view the list of crsids. This list 
-needs to be passed inside a dictionary called *loockup_lists*. The key entry name of the dictionary where the list is 
+needs to be passed inside a dictionary called *lookup_lists*. The key entry name of the dictionary where the list is
 located it is passed to the macro using the variable *user_list* as shown previously. In this example:
 
 ```python

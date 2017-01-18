@@ -1,6 +1,11 @@
 django-ucamlookup changelog
 =============================
 
+1.9.2 - 18/01/2017
+------------------
+
+- feature: parametrised placeholder
+
 1.9.1 - 13/01/2017
 ------------------
 
