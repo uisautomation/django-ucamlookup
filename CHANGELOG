@@ -1,6 +1,11 @@
 django-ucamlookup changelog
 =============================
 
+1.9.3 - 22/03/2017
+------------------
+
+- bugfix: "single select" control not initialising (introduced single_user on ucamlookup_users.html to initialise "single select")
+
 1.9.2 - 18/01/2017
 ------------------
 

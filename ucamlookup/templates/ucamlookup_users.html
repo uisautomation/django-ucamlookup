@@ -1,11 +1,11 @@
 {% load dictionary_tag %}
 <script>
-    /**
-     * ID of the last AJAX search request we sent.
-     */
-    searchId_u = 0;
-
     $(document).ready(function() {
+        /**
+         * ID of the last AJAX search request we sent.
+         */
+        var searchId_u = 0;
+
         $("#{{ input_tag_id }}").select2({
             placeholder: '{{ placeholder|default:"Search for user" }}',
             minimumInputLength: 3,
@@ -41,16 +41,25 @@
             dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
         });
 
-        $("#{{ input_tag_id }}").select2("data", [
-            {% for authorised_user in lookup_lists|get_item:user_list %}
-                {
-                    crsid: "{{ authorised_user.username }}",
-                    visibleName: "{{ authorised_user.last_name }}",
-                    {% if request.user.username == authorised_user.username %}
-                        locked: true
-                    {% endif %}
-                },
-            {% endfor %}
-        ]);
+        {% if user_list %}
+            $("#{{ input_tag_id }}").select2("data", [
+                {% for authorised_user in lookup_lists|get_item:user_list %}
+                    {
+                        crsid: "{{ authorised_user.username }}",
+                        visibleName: "{{ authorised_user.last_name }}",
+                        {% if request.user.username == authorised_user.username %}
+                            locked: true
+                        {% endif %}
+                    },
+                {% endfor %}
+            ]);
+        {% endif %}
+
+        {% if single_user %}
+            $("#{{ input_tag_id }}").select2("data", {
+                crsid: "{{ single_user.username }}",
+                visibleName: "{{ single_user.last_name }}"
+            });
+        {% endif %}
     });
 </script>
