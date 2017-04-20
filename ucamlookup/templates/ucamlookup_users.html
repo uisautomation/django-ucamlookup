@@ -61,5 +61,9 @@
                 visibleName: "{{ single_user.last_name }}"
             });
         {% endif %}
+
+        {% if disabled %}
+            $("#{{ input_tag_id }}").select2("enable", false);
+        {% endif %}
     });
 </script>
