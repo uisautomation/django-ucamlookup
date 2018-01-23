@@ -2,7 +2,7 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: django-ucamlookup
 Upstream-Contact: Information Systems, University Information Service, University of Cambridge
  <information-systems@ucs.cam.ac.uk>
-Source: https://git.csx.cam.ac.uk/x/ucs/u/amc203/django-ucamlookup.git
+Source: https://github.com/uisautomation/django-ucamlookup.git
 
 Files: *
 Copyright: Copyright (c) 2015, University of Cambridge and individual contributors.
