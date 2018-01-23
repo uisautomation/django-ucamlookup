@@ -7,7 +7,7 @@ setup(
     name='django-ucamlookup',
     description='A Django module for the University of Cambridge Lookup service',
     long_description=open('README.rst').read(),
-    url='https://git.csx.cam.ac.uk/x/ucs/u/amc203/django-ucamlookup.git',
+    url='https://github.com/uisautomation/django-ucamlookup.git',
     version='1.9.4',
     license='MIT',
     author='Information Systems Group, University Information Services, University of Cambridge',
