@@ -38,6 +38,7 @@ else:
 import base64
 from datetime import date
 from xml.parsers import expat
+
 import sys
 if sys.hexversion < 0x02040000:
     from sets import Set as set
@@ -288,7 +289,7 @@ class IbisInstitution(IbisDto):
         "acronym":
             """
             str
-              The institutions's acronym, if set (e.g., ``"UCS"``).
+              The institution's acronym, if set (e.g., ``"UCS"``).
             """,
         "attributes":
             """
@@ -1327,6 +1328,8 @@ class IbisResultParser:
             if tagname == "person":
                 element = IbisPerson(attrs)
             elif tagname == "institution":
+                element = IbisInstitution(attrs)
+            elif tagname == "membersOfInst":
                 element = IbisInstitution(attrs)
             elif tagname == "group":
                 element = IbisGroup(attrs)
