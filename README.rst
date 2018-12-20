@@ -187,3 +187,16 @@ the name instead of the code in the admin interface
             
         institution.admin_order_field = 'institution_id'
 
+
+Developing
+==========
+
+Run tests
+---------
+
+Tox is configured to run on a container with a matrix execution of different versions of python and django combined.
+It will also show the coverage and any possible PEP8 violations.
+
+.. code:: shell
+
+        $ docker-compose up --build tox
