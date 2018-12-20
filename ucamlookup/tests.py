@@ -2,7 +2,10 @@ import json
 import sys
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except Exception:
+    from django.urls import reverse
 from django.test import TestCase
 from ucamlookup.models import LookupGroup
 from ucamlookup.utils import user_in_groups, get_users_from_query, return_visibleName_by_crsid, get_groups_from_query, \
