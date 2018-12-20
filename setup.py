@@ -14,7 +14,7 @@ setup(
     author_email='devops@uis.cam.ac.uk',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=['django>=1.8'],
+    install_requires=['django>=1.11'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
