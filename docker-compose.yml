@@ -1,0 +1,21 @@
+# docker-compose file for local development and testing with container image.
+#
+# Extends compose/base.yml so launch services via:
+#
+#   docker-compose -f compose/base.yml -f compose/tox.yml run --rm tox <...>
+version: '3.2'
+services:
+  tox:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - TOXINI_WORK_DIR=/tmp/tox-data/work
+      - TOXINI_ARTEFACT_DIR=/tmp/tox-data/artefacts
+    volumes:
+      - tox-data:/tmp/tox-data
+
+volumes:
+  # A persistent volume for tox to store its stuff. This allows caching of
+  # virtualenvs between runs.
+  tox-data:
