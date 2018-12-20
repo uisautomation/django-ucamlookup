@@ -1,0 +1,7 @@
+[run]
+omit=
+	setup.py
+	ucamlookup/tests/*
+	ucamlookup/wsgi.py
+	.tox/*
+	ucamlookup/migrations/*

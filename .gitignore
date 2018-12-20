@@ -4,3 +4,6 @@ dist
 .DS_Store
 django_ucamlookup.egg-info
 MANIFEST
+.tox
+build
+.coverage
