@@ -110,7 +110,7 @@ class UcamLookupTests(TestCase):
         User.objects.create_user(username="amc203", password="test")
         self.assertTrue(self.client.login(username='amc203', password="test"))
         response = self.client.get(reverse('ucamlookup_find_people'), {'query': 'amc203', 'searchId_u': '1'})
-        if sys.version_info >= (3,0):
+        if sys.version_info >= (3, 0):
             jsonresponse = json.loads(response.content.decode('utf-8'))
         else:
             jsonresponse = json.loads(response.content)
@@ -126,7 +126,7 @@ class UcamLookupTests(TestCase):
         self.assertTrue(self.client.login(username='amc203', password="test"))
         response = self.client.get(reverse('ucamlookup_find_groups'), {'query': 'Information Systems',
                                                                        'searchId_g': '1'})
-        if sys.version_info >= (3,0):
+        if sys.version_info >= (3, 0):
             jsonresponse = json.loads(response.content.decode('utf-8'))
         else:
             jsonresponse = json.loads(response.content)

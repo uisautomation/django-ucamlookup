@@ -10,6 +10,7 @@ def find_people(request):
     return HttpResponse(json.dumps({'searchId_u': request.GET.get('searchId_u'), 'persons': persons}),
                         content_type='application/json')
 
+
 @login_required
 def find_groups(request):
     groups = get_groups_from_query(request.GET.get('query'))

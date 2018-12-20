@@ -1,6 +1,6 @@
 import re
 from django.core.exceptions import ValidationError
-from ucamlookup.ibisclient import *
+from ucamlookup.ibisclient import createConnection, PersonMethods, GroupMethods, IbisException, InstitutionMethods
 
 
 conn = createConnection()

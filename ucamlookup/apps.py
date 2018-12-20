@@ -7,4 +7,4 @@ class UCamLookupConfig(AppConfig):
 
     def ready(self):
         super(UCamLookupConfig, self).ready()
-        import ucamlookup.signals
+        import ucamlookup.signals  # noqa: F401

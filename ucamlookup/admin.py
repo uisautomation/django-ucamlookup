@@ -6,7 +6,7 @@ from django import forms
 from ucamlookup.models import LookupGroup
 
 
-class UserCreationForm(forms.ModelForm):
+class UserCreationForm(forms.ModelForm):  # noqa: F811
     """
     A form that creates a user, with no privileges, from the given username and
     password.
