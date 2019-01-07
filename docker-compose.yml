@@ -6,14 +6,15 @@
 version: '3.2'
 services:
   tox:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: themattrix/tox-base
+    entrypoint: tox
     environment:
       - TOXINI_WORK_DIR=/tmp/tox-data/work
       - TOXINI_ARTEFACT_DIR=/tmp/tox-data/artefacts
+      - TOXINI_COVERAGE_FILE=/tmp/tox-coverage
     volumes:
       - tox-data:/tmp/tox-data
+      - ./:/app:ro
 
 volumes:
   # A persistent volume for tox to store its stuff. This allows caching of

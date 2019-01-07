@@ -159,5 +159,5 @@ Tox is configured to run on a container with a matrix execution of different ver
 It will also show the coverage and any possible PEP8 violations.
 
 ```shell
-$ docker-compose up --build tox
+$ docker-compose up
 ```

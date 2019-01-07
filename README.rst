@@ -199,4 +199,4 @@ It will also show the coverage and any possible PEP8 violations.
 
 .. code:: shell
 
-        $ docker-compose up --build tox
+        $ docker-compose up
