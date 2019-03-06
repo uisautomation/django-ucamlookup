@@ -1,5 +1,7 @@
 # Introduction
 
+> This repository has moved to **https://gitlab.developers.cam.ac.uk/uis/devops/django/ucamlookup**
+
 django-ucamlookup is a library which provides useful methods and templates to integrate your 
 [Django](https://www.djangoproject.com/) application with the University of Cambridge University 
 [Lookup service](https://www.lookup.cam.ac.uk/). 
